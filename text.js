@@ -1,34 +1,13 @@
 import * as React from 'react';
-import {
-  Image,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  TouchableHighlight,
-  TextInput,
-  FlatView,
-  ScrollView,
-  Button,
-  Text,
-  View,
-  StyleSheet,
-  Picker,
+import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView,ScrollView,Button,Text,View,StyleSheet,Picker,
 } from 'react-native';
-import DatePicker from 'react-native-datepicker';
-import Constants from 'expo-constants';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import Ionicons from 'react-native-vector-icons/FontAwesome';
-// You can import from local files
-// You can import from local files
 
-//styles
+//import { Ionicons } from 'react-native-elements';
+//import { Ionicons } from '@expo/vector-icons';
+import Ionicons from 'react-native-vector-icons/FontAwesome';
+import DatePicker from 'react-native-datepicker';
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-   
-  },
-  data:{
+	data:{
 		
 		flexDirection:'row',
 		borderColor: 'grey',
@@ -46,21 +25,17 @@ const styles = StyleSheet.create({
 		borderBottomColor: 'black',
 		borderBottomWidth: 1,
   },
+})
  
-});
-export default class SignUp extends React.Component {
-  static navigationOptions = {
-    headerTitle: 'Back to login page',
-  };
-  constructor(props) {
-    super(props);
-    
-  }
 
-  render() {
-    return (
-      <ScrollView style={styles.container}>
-        <View style={{flex:1,marginTop:3,marginLeft:15,}}>
+export default class Test extends React.Component{
+	 constructor(props) {
+    super(props);
+    this.state = { date: '0-0-0000' };
+  }
+    render(){
+        return(
+            <View style={{flex:1,marginTop:3,marginLeft:15,}}>
 				<View style={styles.data}>
 					<Ionicons name="user" size={25}/>
 					<TextInput placeholder="Full name"   underlineColorAndroid={'transparent'} style={{marginLeft:15}}/>
@@ -114,12 +89,6 @@ export default class SignUp extends React.Component {
 				</View>
 				
 			</View>
-			
-			<View style={{marginTop:50,margin:25}}>
-					<Button title="Sign Up"/>
-				</View>
-			
-      </ScrollView>
-    );
-  }
+        )
+    }
 }

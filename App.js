@@ -9,11 +9,13 @@ import LoginView from './login.js'
 import SignUp from './signUp.js'
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import Test from './text.js'
 
 
 const NavStack = createStackNavigator({
   One : LoginView,
   Two : SignUp,
+  
 });
 //this line is important in v3
 const AppNavigator = createAppContainer(NavStack);

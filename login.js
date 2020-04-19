@@ -70,13 +70,43 @@ export default class LoginView extends React.Component{
       Dashboard:false
     }
   }
-c = () =>  {
-  console.log(this.state.Dashboard)
-   this.setState({
-      Dashboard: true
+/*
+  fetch('/'+subject+'/doneExam/'+roll,{
+    method:"POST",
+    credentials:'include',
+    body:JSON.stringify(answers),
+    cache: 'no-cache',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+});
+*/
+  login = async () => {
+    
+    const response = await fetch("http://192.168.1.5:5000/login",{
+      method : 'POST',
+      cache: 'no-cache',
+      credentials:'include',
+      headers : {'Content-Type': 'application/json'},
+      body:JSON.stringify({Email:this.state.Email,Password:this.state.Password}),
     })
-  }
+    const err= await response.text()
+    console.log(err)
 
+  } 
+  // this.setState({
+    //  Dashboard: true,
+     
+    //})
+  
+//value={this.state.Email}
+
+  handleEmailChange = (Email) =>{
+    this.setState({Email:Email})
+  }
+  handlePasswordChange = (Password) =>{
+    this.setState({Password:Password})
+  }
   render(){
      if(this.state.Dashboard) {return(<Dashboard />)}
    
@@ -91,19 +121,25 @@ c = () =>  {
             <TextInput style={styles.input}
               placeholder="Email"
               keyboardType="email-address"
+			        value={this.state.Email}
+              onChangeText = {this.handleEmailChange}
+			  
               underlineColorAndroid='transparent'/>
           </View>
           <View style={styles.inputContainer}>  
             <TextInput style={styles.input}
               placeholder="Password"
               secureTextEntry={true}
+              value={this.state.Password}
+              onChangeText = {this.handlePasswordChange}
               underlineColorAndroid='transparent'/>   
           </View>
-        <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} >
-          <Text style={{ color: 'white',fontSize:30,}} onPress={this.c}>Login</Text>
+          
+        <TouchableOpacity style={styles.buttonContainer} onPress={this.login}>
+          <Text style={{ color: 'white',fontSize:30,}} >Login</Text>
         </TouchableOpacity>
-        <TouchableHighlight>
-            <Text style={{color:'blue',marginTop:15,fontSize:15,}} onPress={()=>{{this.props.navigation.navigate("Two")}}}>Create a new account</Text>
+        <TouchableHighlight onPress={()=>{{this.props.navigation.navigate("Two")}}}>
+            <Text style={{color:'blue',marginTop:15,fontSize:15,}} >Create a new account</Text>
         </TouchableHighlight>
         </View>
       </View>

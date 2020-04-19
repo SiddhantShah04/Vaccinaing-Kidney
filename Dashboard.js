@@ -75,6 +75,9 @@ const Nav = createStackNavigator({
 });
 const AppNav = createAppContainer(Nav);
 export default class Dashboard extends React.Component{
+  static navigationOptions = {
+    headerShown: false
+};
   render(){
     return(
       <AppNav />
