@@ -1,11 +1,7 @@
 import * as React from 'react';
-import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
+import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet,ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
-
-import SignUp from './signUp.js'
-
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
-import Dashboard from './Dashboard.js'
 import {createStackNavigator} from 'react-navigation-stack';
 // You can import from local files
 
@@ -66,40 +62,33 @@ export default class LoginView extends React.Component{
     super(props);
     this.state ={
       Email:'',
+	  animating: false,
       Password:'',
       Dashboard:false
     }
   }
-/*
-  fetch('/'+subject+'/doneExam/'+roll,{
-    method:"POST",
-    credentials:'include',
-    body:JSON.stringify(answers),
-    cache: 'no-cache',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-});
-*/
+	 loeggedIn = () =>{
+		 {this.props.navigation.navigate("Three")}
+	 }
   login = async () => {
-    
-    const response = await fetch("http://192.168.1.5:5000/login",{
+	  
+	this.setState({animating: true })  
+    const response = await fetch("http://192.168.1.4:5000/login",{
       method : 'POST',
       cache: 'no-cache',
       credentials:'include',
       headers : {'Content-Type': 'application/json'},
       body:JSON.stringify({Email:this.state.Email,Password:this.state.Password}),
     })
-    const err= await response.text()
-    console.log(err)
+	
+	
+    const res= await response.text()
+	this.setState({animating: false })  
+	if(res==="ok"){
+		this.loeggedIn()
+	}else{alert(res)}
+  }
 
-  } 
-  // this.setState({
-    //  Dashboard: true,
-     
-    //})
-  
-//value={this.state.Email}
 
   handleEmailChange = (Email) =>{
     this.setState({Email:Email})
@@ -108,7 +97,7 @@ export default class LoginView extends React.Component{
     this.setState({Password:Password})
   }
   render(){
-     if(this.state.Dashboard) {return(<Dashboard />)}
+     if(this.state.Dashboard) {return(<Dashboard/>)}
    
     return(
       <View style={styles.container}>
@@ -142,6 +131,7 @@ export default class LoginView extends React.Component{
             <Text style={{color:'blue',marginTop:15,fontSize:15,}} >Create a new account</Text>
         </TouchableHighlight>
         </View>
+		<ActivityIndicator animating = {this.state.animating} color = 'red'size = "large"style={styles.activityIndicator}/>
       </View>
     )
   }
