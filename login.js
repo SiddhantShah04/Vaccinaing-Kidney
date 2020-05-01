@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 })
 // https://stackoverflow.com/questions/42261011/react-navigation-switching-background-colors-and-styling-stacknavigator sta
 export default class LoginView extends React.Component{
+	
   static navigationOptions = {
           headerShown: false
       };
@@ -68,12 +69,13 @@ export default class LoginView extends React.Component{
     }
   }
 	 loeggedIn = () =>{
-		 {this.props.navigation.navigate("Three")}
+		 
+		 {this.props.navigation.navigate("Three", { name:this.state.Email})}
 	 }
   login = async () => {
 	  
 	this.setState({animating: true })  
-    const response = await fetch("http://192.168.1.4:5000/login",{
+    const response = await fetch("https://vkidneym.herokuapp.com/login",{
       method : 'POST',
       cache: 'no-cache',
       credentials:'include',
@@ -81,10 +83,11 @@ export default class LoginView extends React.Component{
       body:JSON.stringify({Email:this.state.Email,Password:this.state.Password}),
     })
 	
-	
     const res= await response.text()
-	this.setState({animating: false })  
+	this.setState({animating: false }) 
+	
 	if(res==="ok"){
+		this.textInput.clear()
 		this.loeggedIn()
 	}else{alert(res)}
   }
@@ -97,7 +100,6 @@ export default class LoginView extends React.Component{
     this.setState({Password:Password})
   }
   render(){
-     if(this.state.Dashboard) {return(<Dashboard/>)}
    
     return(
       <View style={styles.container}>
@@ -110,15 +112,16 @@ export default class LoginView extends React.Component{
             <TextInput style={styles.input}
               placeholder="Email"
               keyboardType="email-address"
-			        value={this.state.Email}
-              onChangeText = {this.handleEmailChange}
-			  
+			    value={this.state.Email}
+                onChangeText = {this.handleEmailChange}
+			
               underlineColorAndroid='transparent'/>
           </View>
           <View style={styles.inputContainer}>  
             <TextInput style={styles.input}
               placeholder="Password"
               secureTextEntry={true}
+			  ref={input => { this.textInput = input }}
               value={this.state.Password}
               onChangeText = {this.handlePasswordChange}
               underlineColorAndroid='transparent'/>   
@@ -127,11 +130,14 @@ export default class LoginView extends React.Component{
         <TouchableOpacity style={styles.buttonContainer} onPress={this.login}>
           <Text style={{ color: 'white',fontSize:30,}} >Login</Text>
         </TouchableOpacity>
+		<ActivityIndicator  animating = {this.state.animating} color = 'red'size = "large"style={styles.activityIndicator}/>
         <TouchableHighlight onPress={()=>{{this.props.navigation.navigate("Two")}}}>
-            <Text style={{color:'blue',marginTop:15,fontSize:15,}} >Create a new account</Text>
+            <Text style={{color:'blue',marginTop:30,fontSize:15,}} >Create a new account</Text>
         </TouchableHighlight>
+		
+		
         </View>
-		<ActivityIndicator animating = {this.state.animating} color = 'red'size = "large"style={styles.activityIndicator}/>
+		
       </View>
     )
   }

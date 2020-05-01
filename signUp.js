@@ -78,18 +78,13 @@ export default class SignUp extends React.Component {
 		else if(this.state.fullName === '' || this.state.Email === ''){
 			alert("Some field are missing")
 		}
-  		else if(this.state.contactNumber.length != 10){
-			alert("Type only 10 digit contact number")
-		}
-		else if(this.state.age.length >2){
-			alert("Invalid age")
-		}
+  
 		else if(this.state.confPassword != this.state.password){
 			alert("Password did not matched")
 		}else{
 			//start snipper
 			this.setState({animating: true })
-			const response = await fetch("http://192.168.1.4:5000/signUp",{
+			const response = await fetch("https://vkidneym.herokuapp.com/signUp",{
 			method : 'POST',
 			cache: 'no-cache',
 			credentials:'include',
@@ -162,12 +157,12 @@ export default class SignUp extends React.Component {
 				
 				<View style={styles.data}>
 					<Ionicons name="phone-square" size={28}/>
-					<TextInput placeholder="Contact number" style={{marginLeft:15,fontSize:20}} value={this.state.contactNumber} onChangeText = {this.handlecontactNumberchange} keyboardType="numeric" underlineColorAndroid={'transparent'}/>
+					<TextInput placeholder="Contact number" maxLength={10}style={{marginLeft:15,fontSize:20}} value={this.state.contactNumber} onChangeText = {this.handlecontactNumberchange} keyboardType="numeric" underlineColorAndroid={'transparent'}/>
 				</View>
 				
 					<View style={styles.data}>
 					<Ionicons name="child" size={28}/>
-					<TextInput placeholder="Age" value={this.state.age} onChangeText = {this.handleAgechange} style={{marginLeft:15,fontSize:20}} keyboardType="numeric" underlineColorAndroid={'transparent'}/>
+					<TextInput placeholder="Age" maxLength={2} value={this.state.age} onChangeText = {this.handleAgechange} style={{marginLeft:15,fontSize:20}} keyboardType="numeric" underlineColorAndroid={'transparent'}/>
 				</View>
 				
 				<View style={styles.data}>

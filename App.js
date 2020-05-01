@@ -9,18 +9,22 @@ import LoginView from './login.js'
 import SignUp from './signUp.js'
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import Dashboard from './Dashboard'
-
+import  Dashboard from './Dashboard'
+import  Menu from './dashboardMenu'
+import qA from './qA'
+import HBVS from './HBVS'
 
 const NavStack = createStackNavigator({
   One : LoginView,
   Two : SignUp,
   Three : Dashboard,
-  
+  Fouth:Menu,
+  Fifth:qA,
+  Sixth:HBVS,
 },
  {
   defaultNavigationOptions: {
-      title: 'Centered',
+    
       headerTitleAlign: 'center'
   }
 	
@@ -34,7 +38,7 @@ export default class App extends React.Component{
   } 
   render(){
     return(
-      <AppNavigator />
+      <HBVS />
     )
   }
 } 
