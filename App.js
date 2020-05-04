@@ -5,14 +5,18 @@ import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput
 import Constants from 'expo-constants';
 
 import LoginView from './login.js'
-
+import Urc from './Urc.js'
 import SignUp from './signUp.js'
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import  Dashboard from './Dashboard'
 import  Menu from './dashboardMenu'
 import qA from './qA'
+import Gain from './Gain'
+import QaHindi from './QaHindi'
 import HBVS from './HBVS'
+
+import AboutUs from './aboutUs'
 
 const NavStack = createStackNavigator({
   One : LoginView,
@@ -21,6 +25,10 @@ const NavStack = createStackNavigator({
   Fouth:Menu,
   Fifth:qA,
   Sixth:HBVS,
+  Seven:QaHindi,
+  Eight:Gain,
+  Nine:Urc,
+  Ten:AboutUs,
 },
  {
   defaultNavigationOptions: {
@@ -38,7 +46,7 @@ export default class App extends React.Component{
   } 
   render(){
     return(
-      <HBVS />
+      <AppNavigator />
     )
   }
 } 

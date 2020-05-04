@@ -12,28 +12,34 @@ import { StackActions, NavigationActions } from 'react-navigation';
 const styles = StyleSheet.create({
 	container:{
 		flex:1,
-		textAlign:'center',
-		marginLeft:10,
-		marginRight:10,
-		marginTop:50,
-		fontSize:20,
-		justifyContent: 'center',
-		borderBottomWidth:1,
 	},
 	datesContainer:{
-		flex:2,
 		justifyContent: 'center',	
 		alignItems: 'center',
 		marginTop:25,
-		marginBottom:10,
+		marginBottom:5,
+		paddingTop:10,
+		paddingBottom:15,
 		borderBottomWidth:1,
 	},
 	dates:{
 		fontSize:15,
-	}
+		
+	},
+	Notes:{
+		fontSize:14,
+		paddingTop:10,
+		marginBottom:10,
+		marginLeft:12,
+	},
 })
 
 export default class HBVS extends React.Component{
+	static navigationOptions = ({ navigation, screenProps }) => ({
+	
+	headerTitle:"Hepatitis B Vaccine Schedule",	
+	 
+  })
 	constructor(props){
 		super(props);
 		this.state ={
@@ -57,62 +63,60 @@ export default class HBVS extends React.Component{
 		this.setState({vaccineDate:(d.toLocaleDateString())})
 		//console.log(d.toLocaleDateString())
 	}
-	
 	setDate1 = (date) => {
 		this.setState({doseDate1:date,doseState2:false})
-		
-		
 	}
 	
 	setDate2 = (date) => {
 		this.setState({doseDate2:date,doseState3:false})
-		
-		
 	}
 	
 	setDate3 = (date) => {
 		this.setState({doseDate3:date})
-	
 	}
-	
 	render(){
 		return(
-			<View style={styles.container}>
-				<Text style={{fontSize:20,textAlign:'center',}}> Hepatitis B Vaccine Schedule </Text>
-				
+			<View Style={styles.container}>
+				<ScrollView>
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row',}}>
-	<Text style={styles.dates,{fontSize:20,}}>0 Doge : </Text><DatePicker date={this.state.doseDate0} style={{width:220}}  mode="date" value={this.state.doseDate0} onDateChange={this.setDate0}/>					
+						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker date={this.state.doseDate0} style={{width:220}}  mode="date" value={this.state.doseDate0} onDateChange={this.setDate0}/>					
 					</View>
-						<Text style={{fontSize:15,}}>Info : You need to take next dose after one month and notification will be sent for the same.</Text>
-						
+						<Text style={styles.Notes}>Note : You need to take next dose after one month and notification will be sent for the same.</Text>					
+						<Button title="Submit" onPress={()=> {alert("ok")}} />
 				</View>
 				
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>1st Doge : </Text><DatePicker date={this.state.doseDate1} style={{width:220}} disabled={this.state.doseState1} mode="date" value={this.state.doseDate1} onDateChange={this.setDate1}/>					
+						<Text style={styles.dates,{fontSize:20,}}>1st Dose : </Text><DatePicker date={this.state.doseDate1} style={{width:220}} disabled={this.state.doseState1} mode="date" value={this.state.doseDate1} onDateChange={this.setDate1}/>					
 					</View>
-						<Text style={{fontSize:15,}}>Info : You need to take next dose after one month and notification will be sent for the same.</Text>
-		
+						<Text style={styles.Notes}>Note: You need to take next dose after one month and notification will be sent for the same.</Text>
 				</View>
 				
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row',}}>
 						<Text style={styles.dates,{fontSize:20,}}>2nd Dose : </Text><DatePicker date={this.state.doseDate2} style={{width:220}} disabled={this.state.doseState2} mode="date" value={this.state.doseDate2} onDateChange={this.setDate2}/>					
 					</View>
-						<Text style={{fontSize:15,}}>Info : You need  to take next dose after four months and notification will be sent for the same.</Text>
-						
+						<Text style={styles.Notes}>Note : You need  to take next dose after four months and notification will be sent for the same.</Text>						
 				</View>
 				
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row',}}>
 						<Text style={styles.dates,{fontSize:20,}}>3rd Dose : </Text><DatePicker date={this.state.doseDate3} style={{width:220}} disabled={this.state.doseState3} mode="date" value={this.state.doseDate3} onDateChange={this.setDate3}/>					
 					</View>
-						<Text style={{fontSize:15,}}>Info : You need to go for antibody test after two months notification will be sent for the same.</Text>				
+						<Text style={styles.Notes}>Note : You need to go for antibody test after two months and notification will be sent for the same.</Text>				
 				</View>
-		
-				
-			</View>
+					
+				<View style={{flex:3,alignItems: 'center',}}>
+				<Text style={{fontSize:20}}> Antibody test</Text>
+					<View style={{flexDirection:'row',marginTop:12,}}>
+						<Text style={styles.dates,{fontSize:17,}}> Antibody test date: </Text><DatePicker date={this.state.doseDate3} style={{width:220}} disabled={this.state.doseState3} mode="date" value={this.state.doseDate3} onDateChange={this.setDate3}/>					
+					</View>
+						<Text style={styles.Notes}>Note : You need to go for antibody test after two months and notification will be sent for the same.</Text>				
+					</View>		
+				</ScrollView>	
+		</View>
+					
 		)
 	}
 }
