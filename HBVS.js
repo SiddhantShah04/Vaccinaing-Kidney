@@ -1,9 +1,7 @@
 import React from 'react';
-import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
+import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView,ActivityIndicator, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
-
 import DatePicker from 'react-native-datepicker'
-
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
@@ -21,6 +19,8 @@ const styles = StyleSheet.create({
 		paddingTop:10,
 		paddingBottom:15,
 		borderBottomWidth:1,
+		marginLeft:10,
+		marginRight:10,
 	},
 	dates:{
 		fontSize:15,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 		fontSize:14,
 		paddingTop:10,
 		marginBottom:10,
-		marginLeft:12,
+		
 	},
 })
 
@@ -43,80 +43,111 @@ export default class HBVS extends React.Component{
 	constructor(props){
 		super(props);
 		this.state ={
-			doseDate0:'',
+			doseDate:'',
 			doseDate1:'',
 			doseDate2:'',
 			doseDate3:'',
 			vaccineDate:'',
-			doseState1: true,
-			doseState2: true,
-			doseState3: true,
+			doseState:false,		
+			Q:[],
+			showDose:false,
+			 animating: true,
+			showDate:false,
 		}
+		this.dateInserted()
 	}
-	
-	setDate0 = (date) => {
-		this.setState({doseDate0:date,doseState1:false})
-		console.log(date)
+	dateInserted = async() => {
+			try{ 
+				const response = await fetch("http://192.168.1.4:5000/hasDate")
+				const re = await response.json()
+			//re.map(this.QA)
+				this.setState({Q:re})
+				
+				this.setState({showDose:true})
+			}catch(e){
+				this.setState({showDate:true})
+			}
+			
+			this.setState({animating:false })  
+		}
+	setDate = (date) => {
+		
+		this.setState({doseDate:date})
+		//console.log(date)
 		var d = new Date(date);
 		d.setMonth(d.getMonth() + 1)
 		d.setDate(d.getDate()-1)
 		this.setState({vaccineDate:(d.toLocaleDateString())})
 		//console.log(d.toLocaleDateString())
+		
 	}
-	setDate1 = (date) => {
-		this.setState({doseDate1:date,doseState2:false})
-	}
-	
-	setDate2 = (date) => {
-		this.setState({doseDate2:date,doseState3:false})
-	}
-	
-	setDate3 = (date) => {
-		this.setState({doseDate3:date})
+
+
+	insertDose = async(dose) => {
+		console.log(dose)
+		console.log(this.state.doseDate)
+		this.setState({doseState:false,animating:true})
+		
+		const response = await fetch("http://192.168.1.4:5000/DoseInsert",{
+					method : 'POST',
+					cache: 'no-cache',
+					credentials:'include',
+					headers : {'Content-Type': 'application/json'},
+					body:JSON.stringify({doseDate:this.state.doseDate,doseType:dose,Email:this.props.navigation.state.params.name}),
+				})
+				const res= await response.text()
+				console.log(res)
+				if(res == "ok"){
+					alert(`Your dose  details has been set for notification`)
+					this.dateInserted()
+					
+				}else{
+					alert("Some thing went wrong")
+				}		
 	}
 	render(){
-		return(
-			<View Style={styles.container}>
+		
+			
+				
+	
+		
+		if(this.state.showDose) return(
+			
+			<View>
+					
+				{this.state.Q.map((Qu) => 
+							<View style={{alignItems: 'center',marginTop:20,marginBottom:20,}}>
+								<Text style={{marginLeft:20,marginRight:20,fontSize:20,fontWeight: "bold",textAlign:'justify'}}>Dose0 :{Qu.dose0date}</Text>						
+								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose1:{Qu.dose1date}</Text>
+								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose2:{Qu.dose2date}</Text>
+								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose3:{Qu.dose3date}</Text>
+								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>antibodyTestDate:{Qu.dose3date}</Text>
+							</View>)
+				}
+		</View>
+		)
+		if(this.state.showDate) return(
+		<View Style={styles.container}>				
 				<ScrollView>
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker date={this.state.doseDate0} style={{width:220}}  mode="date" value={this.state.doseDate0} onDateChange={this.setDate0}/>					
+						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker disabled={this.state.doseState} date={this.state.doseDate} style={{width:220}}  mode="date" value={this.state.doseDate} onDateChange={this.setDate}/>			
 					</View>
-						<Text style={styles.Notes}>Note : You need to take next dose after one month and notification will be sent for the same.</Text>					
-						<Button title="Submit" onPress={()=> {alert("ok")}} />
+						<Text style={styles.Notes}> <Text style={{fontWeight:'bold'}}>Note :</Text> You need to take next dose after one month and notification will be sent for the same.</Text>					
+						<Button title="Submit" onPress={()=> {this.insertDose("dose0date")}} />
+						<ActivityIndicator  animating = {this.state.animating} color = 'red'size = "large"style={styles.activityIndicator}/>
 				</View>
-				
-				<View style={styles.datesContainer}>
-					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>1st Dose : </Text><DatePicker date={this.state.doseDate1} style={{width:220}} disabled={this.state.doseState1} mode="date" value={this.state.doseDate1} onDateChange={this.setDate1}/>					
-					</View>
-						<Text style={styles.Notes}>Note: You need to take next dose after one month and notification will be sent for the same.</Text>
-				</View>
-				
-				<View style={styles.datesContainer}>
-					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>2nd Dose : </Text><DatePicker date={this.state.doseDate2} style={{width:220}} disabled={this.state.doseState2} mode="date" value={this.state.doseDate2} onDateChange={this.setDate2}/>					
-					</View>
-						<Text style={styles.Notes}>Note : You need  to take next dose after four months and notification will be sent for the same.</Text>						
-				</View>
-				
-				<View style={styles.datesContainer}>
-					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>3rd Dose : </Text><DatePicker date={this.state.doseDate3} style={{width:220}} disabled={this.state.doseState3} mode="date" value={this.state.doseDate3} onDateChange={this.setDate3}/>					
-					</View>
-						<Text style={styles.Notes}>Note : You need to go for antibody test after two months and notification will be sent for the same.</Text>				
-				</View>
-					
-				<View style={{flex:3,alignItems: 'center',}}>
-				<Text style={{fontSize:20}}> Antibody test</Text>
-					<View style={{flexDirection:'row',marginTop:12,}}>
-						<Text style={styles.dates,{fontSize:17,}}> Antibody test date: </Text><DatePicker date={this.state.doseDate3} style={{width:220}} disabled={this.state.doseState3} mode="date" value={this.state.doseDate3} onDateChange={this.setDate3}/>					
-					</View>
-						<Text style={styles.Notes}>Note : You need to go for antibody test after two months and notification will be sent for the same.</Text>				
-					</View>		
-				</ScrollView>	
+			</ScrollView>	
 		</View>
 					
 		)
+		
+		else{
+			return(
+				<View Style={styles.container}>	
+					<ActivityIndicator  animating = {this.state.animating} color = 'red'size = "large"style={styles.activityIndicator}/>
+				</View>
+			)
+		}
 	}
 }

@@ -90,7 +90,7 @@ export default class Dashboard extends React.Component{
 			
 			
 			<View style={{ marginTop:10}}>
-				<TouchableOpacity  style={style.input,{backgroundColor:"#b6c617",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={()=>{this.props.navigation.navigate("Sixth")}}>
+				<TouchableOpacity  style={style.input,{backgroundColor:"#b6c617",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={()=>{this.props.navigation.navigate("Sixth",{name:`${this.props.navigation.state.params.name}`})}}>
 					<View style={{flexDirection:'row'}}>
 					<Ionicons style={{marginLeft:10,}} name="calendar-alt" size={35} col/>
 					<Text style={ style.buttonText} > Hepatitis B Vaccine Schedule</Text>
