@@ -75,7 +75,7 @@ export default class LoginView extends React.Component{
   login = async () => {
 	  
 	this.setState({animating: true })  
-    const response = await fetch("https://vkidneym.herokuapp.com/login",{
+    const response = await fetch("http://192.168.1.4:5000/login",{
       method : 'POST',
       cache: 'no-cache',
       credentials:'include',

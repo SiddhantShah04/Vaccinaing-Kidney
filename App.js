@@ -4,6 +4,8 @@ import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput
 
 import Constants from 'expo-constants';
 
+
+
 import LoginView from './login.js'
 import Urc from './Urc.js'
 import SignUp from './signUp.js'
@@ -43,7 +45,12 @@ const AppNavigator = createAppContainer(NavStack);
 export default class App extends React.Component{
   constructor(props){
     super(props);
+	
   } 
+  
+  
+  
+  
   render(){
     return(
       <AppNavigator />

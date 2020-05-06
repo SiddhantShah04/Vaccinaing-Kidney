@@ -7,6 +7,9 @@ import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { StackActions, NavigationActions } from 'react-navigation';
 
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+
 const styles = StyleSheet.create({
 	container:{
 		flex:1,
@@ -44,22 +47,31 @@ export default class HBVS extends React.Component{
 		super(props);
 		this.state ={
 			doseDate:'',
-			doseDate1:'',
-			doseDate2:'',
-			doseDate3:'',
+			expoPushToken:'',
 			vaccineDate:'',
 			doseState:false,		
 			Q:[],
 			showDose:false,
 			 animating: true,
 			showDate:false,
+			
 		}
+		this.registerForPushNotificationsAsync();
 		this.dateInserted()
 	}
 	dateInserted = async() => {
 			try{ 
-				const response = await fetch("http://192.168.1.4:5000/hasDate")
+			
+				const response = await fetch("http://192.168.1.4:5000/hasDate"
+				,{
+					method : 'POST',
+					cache: 'no-cache',
+					credentials:'include',
+					headers : {'Content-Type': 'application/json'},
+					body:JSON.stringify({Email:this.props.navigation.state.params.name}),
+				})
 				const re = await response.json()
+				
 			//re.map(this.QA)
 				this.setState({Q:re})
 				
@@ -74,14 +86,35 @@ export default class HBVS extends React.Component{
 		
 		this.setState({doseDate:date})
 		//console.log(date)
+		
 		var d = new Date(date);
 		d.setMonth(d.getMonth() + 1)
 		d.setDate(d.getDate()-1)
 		this.setState({vaccineDate:(d.toLocaleDateString())})
-		//console.log(d.toLocaleDateString())
+		//console.log("si" +d.toLocaleDateString())
 		
 	}
 
+	registerForPushNotificationsAsync = async () => {
+		console.log("j")
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = await Notifications.getExpoPushTokenAsync();
+      console.log(token);
+      this.setState({ expoPushToken: token });
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  } 
 
 	insertDose = async(dose) => {
 		console.log(dose)
@@ -93,24 +126,18 @@ export default class HBVS extends React.Component{
 					cache: 'no-cache',
 					credentials:'include',
 					headers : {'Content-Type': 'application/json'},
-					body:JSON.stringify({doseDate:this.state.doseDate,doseType:dose,Email:this.props.navigation.state.params.name}),
+					body:JSON.stringify({expoPushToken:this.state.expoPushToken,doseDate:this.state.doseDate,vaccineDate:this.state.vaccineDate,doseType:dose,Email:this.props.navigation.state.params.name}),
 				})
 				const res= await response.text()
 				console.log(res)
 				if(res == "ok"){
 					alert(`Your dose  details has been set for notification`)
 					this.dateInserted()
-					
 				}else{
 					alert("Some thing went wrong")
 				}		
 	}
 	render(){
-		
-			
-				
-	
-		
 		if(this.state.showDose) return(
 			
 			<View>
@@ -131,7 +158,7 @@ export default class HBVS extends React.Component{
 				<ScrollView>
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker disabled={this.state.doseState} date={this.state.doseDate} style={{width:220}}  mode="date" value={this.state.doseDate} onDateChange={this.setDate}/>			
+						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker  disabled={this.state.doseState} date={this.state.doseDate} style={{width:220}}  mode="date" value={this.state.doseDate} onDateChange={this.setDate}/>			
 					</View>
 						<Text style={styles.Notes}> <Text style={{fontWeight:'bold'}}>Note :</Text> You need to take next dose after one month and notification will be sent for the same.</Text>					
 						<Button title="Submit" onPress={()=> {this.insertDose("dose0date")}} />
