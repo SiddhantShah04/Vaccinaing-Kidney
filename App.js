@@ -17,6 +17,7 @@ import qA from './qA'
 import Gain from './Gain'
 import QaHindi from './QaHindi'
 import HBVS from './HBVS'
+import HBVS2 from './hbvs2'
 
 import AboutUs from './aboutUs'
 
@@ -31,6 +32,7 @@ const NavStack = createStackNavigator({
   Eight:Gain,
   Nine:Urc,
   Ten:AboutUs,
+  Eleven:HBVS2,
 },
  {
   defaultNavigationOptions: {
