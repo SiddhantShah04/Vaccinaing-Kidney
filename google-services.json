@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "410784105231",
+    "firebase_url": "https://kidnified.firebaseio.com",
+    "project_id": "kidnified",
+    "storage_bucket": "kidnified.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410784105231:android:8de1053d73134553d2747a",
+        "android_client_info": {
+          "package_name": "com.yourcompany.yourappname"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410784105231-pc3ie04f7mra9s7bjcuoq9mn6591he1a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACF3eCjb_zkaDgQfB0-Cqcx5Qt6JtibbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410784105231-pc3ie04f7mra9s7bjcuoq9mn6591he1a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,11 @@
 import React from 'react';
-import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
+import {Image,TouchableOpacity,KeyboardAvoidingView,ActivityIndicator,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
 import DatePicker from 'react-native-datepicker'
+
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -24,7 +27,6 @@ const styles = StyleSheet.create({
 	},
 	dates:{
 		fontSize:15,
-		
 	},
 	Notes:{
 		fontSize:14,
@@ -33,7 +35,6 @@ const styles = StyleSheet.create({
 		marginLeft:12,
 	},
 })
-
 
 export default class HBVS extends React.Component{
 	i
@@ -56,14 +57,38 @@ export default class HBVS extends React.Component{
 			doseState3: true,
 			dates:true,
 			Q:[],
+			expoPushToken:'',
+			animating: true,
 			
 		}
 			this.dateInserted()
+			this.registerForPushNotificationsAsync();
 	}
 	
+	registerForPushNotificationsAsync = async () => {
+		console.log("j")
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = await Notifications.getExpoPushTokenAsync();
+      console.log(token);
+      this.setState({ expoPushToken: token });
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  } 
 	
 	
 	dateInserted = async() => {
+		
 			try{ 		
 				const response = await fetch("http://192.168.1.4:5000/hasDate"
 				,{
@@ -79,6 +104,8 @@ export default class HBVS extends React.Component{
 				if(re.length === 0){
 					this.setState({dates:true})
 					console.log(new Date().toLocaleDateString())
+					
+					this.setState({animating:false})
 				}
 				else{
 					console.log("f")
@@ -105,6 +132,7 @@ export default class HBVS extends React.Component{
 			}catch(e){
 				console.log(e)
 			}
+			//this.setState({animating:false})
 		}
 	setDate0 = (date) => {
 		
@@ -119,8 +147,10 @@ export default class HBVS extends React.Component{
 	setDate1 = (date) => {
 		this.setState({doseDate1:date})
 		let d = new Date(date);
+		console.log(d.getFullYear())
 		d.setMonth(d.getMonth() + 1)
 		d.toLocaleDateString()
+		
 		this.setDate2(d);
 	}
 	setDate2 = (date) => {
@@ -142,15 +172,20 @@ export default class HBVS extends React.Component{
 		
 		
 		console.log(this.state.doseDate)
-		this.setState({doseState:false,animating:true})
+		this.setState({animating:true})
 		
 		const response = await fetch("http://192.168.1.4:5000/DoseInsert",{
 					method : 'POST',
 					cache: 'no-cache',
 					credentials:'include',
 					headers : {'Content-Type': 'application/json'},
-					body:JSON.stringify({Email:this.props.navigation.state.params.name,dose0:`${this.state.doseDate0.toLocaleDateString()}`,dose1:`${this.state.doseDate1.toLocaleDateString()}`,dose2:`${this.state.doseDate2.toLocaleDateString()}`,
-					dose3:`${this.state.doseDate3.toLocaleDateString()}`,abtDate:`${this.state.abtDate.toLocaleDateString()}`}),
+					body:JSON.stringify({Email:this.props.navigation.state.params.name,
+					dose0:`${this.state.doseDate0.getDate()}/${this.state.doseDate0.getMonth()}/${this.state.doseDate0.getFullYear()}`,
+					dose1:`${this.state.doseDate1.getDate()}/${this.state.doseDate1.getMonth()}/${this.state.doseDate1.getFullYear()}`,
+					dose2:`${this.state.doseDate2.getDate()}/${this.state.doseDate2.getMonth()}/${this.state.doseDate2.getFullYear()}`,
+					dose3:`${this.state.doseDate3.getDate()}/${this.state.doseDate3.getMonth()}/${this.state.doseDate3.getFullYear()}`,
+					abtDate:`${this.state.abtDate.getDate()}/${this.state.abtDate.getMonth()}/${this.state.abtDate.getFullYear()}`,
+					Token:this.state.expoPushToken}),
 				})
 				const res= await response.text()
 				console.log(res)
@@ -164,15 +199,20 @@ export default class HBVS extends React.Component{
 	
 	render(){
 		if(this.state.dates){
+			if(this.state.animating){
+				return(
+					<ActivityIndicator  animating = {this.state.animating} color = 'red'size = "large"style={styles.activityIndicator}/>
+				)
+			}
 		return(
-			
 			<View Style={styles.container}>
+			
 				<ScrollView>
 				<View style={styles.datesContainer}>
 				<Button title="Submit" onPress={this.insertDate} />
 				<Text></Text>
 					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker date={this.state.doseDate0} style={{width:220}}  mode="date" value={this.state.doseDate0} onDateChange={this.setDate0}/>					
+						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker  date={this.state.doseDate0} style={{width:220}}  mode="date" value={this.state.doseDate0} onDateChange={this.setDate0}/>					
 					</View>
 						<Text style={styles.Notes}>Note : You need to take next dose after one month and notification will be sent for the same.</Text>					
 						
@@ -210,10 +250,10 @@ export default class HBVS extends React.Component{
 		</View>				
 		)
 		}
-		else{
+		if(!this.state.dates){
 			return(
 				<View>
-			{this.state.Q.map((Qu) => 
+					{this.state.Q.map((Qu) => 
 							<View style={{alignItems: 'center',marginTop:20,marginBottom:20,}}>
 								<Text style={{marginLeft:20,marginRight:20,fontSize:20,fontWeight: "bold",textAlign:'justify'}}>Dose0 :{Qu.dose0date}</Text>						
 								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose1:{Qu.dose1date}</Text>
@@ -221,9 +261,10 @@ export default class HBVS extends React.Component{
 								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose3:{Qu.dose3date}</Text>
 								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>antibodyTestDate:{Qu.antibodyTestDate}</Text>
 							</View>)
-				}
+					}
 				</View>
 			)
 		}
+			
 	}
 }
