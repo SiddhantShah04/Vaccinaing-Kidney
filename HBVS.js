@@ -19,11 +19,12 @@ const styles = StyleSheet.create({
 	datesContainer:{
 		justifyContent: 'center',	
 		alignItems: 'center',
-		marginTop:25,
+		marginTop:15,
 		marginBottom:5,
-		paddingTop:10,
+		paddingTop:1,
 		paddingBottom:15,
 		borderBottomWidth:1,
+		
 	},
 	dates:{
 		fontSize:15,
@@ -34,10 +35,20 @@ const styles = StyleSheet.create({
 		marginBottom:10,
 		marginLeft:12,
 	},
+	atest:{
+		textAlign:'center',
+		fontSize:20,
+		marginTop:10,
+		color:'red',
+	}
 })
 
+const doseType=["0 Dose","1st Dose","2nd Dose","3rd Dose","Antibody Test"]
+
+let todayDate = `${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
+let tDay = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())
 export default class HBVS extends React.Component{
-	i
+	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 	
 	headerTitle:"Hepatitis B Vaccine Schedule",	
@@ -46,27 +57,29 @@ export default class HBVS extends React.Component{
 	constructor(props){
 		super(props);
 		this.state ={
-			doseDate0:'2020-05-06',
-			doseDate1:'2020-06-06',
-			doseDate2:'2020-07-06',
-			doseDate3:'2020-11-06',
-			abtDate:'2021-01-06',
-			vaccineDate:'',
-			doseState1: true,
-			doseState2: true,
-			doseState3: true,
+			doseDate:'06-05-2020',
+			doseDate1:'06-06-2020',
+			doseDate2:'06-07-2020',
+			doseDate3:'06-11-2020',
+			buttonState:true,
 			dates:true,
-			Q:[],
+			Q:[todayDate],
+			notify:'',
+			abtValue:'',
 			expoPushToken:'',
 			animating: true,
-			
+			doseType:["0 Dose","1st Dose","2nd Dose","3rd Dose","Antibody Test"],
+			month:[" You need to take next dose after One month and notification will be sent for the same",
+			" You need to take next dose after One month and notification will be sent for the same",
+			"You need to take next dose after Four Months and notification will be sent for the same" 
+			,"You need to take next dose after Two months and notification will be sent for the same","Next Dose based on Antibody Value"]
 		}
 			this.dateInserted()
+			
 			this.registerForPushNotificationsAsync();
 	}
 	
 	registerForPushNotificationsAsync = async () => {
-		console.log("j")
     if (Constants.isDevice) {
       const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
       let finalStatus = existingStatus;
@@ -90,7 +103,7 @@ export default class HBVS extends React.Component{
 	dateInserted = async() => {
 		
 			try{ 		
-				const response = await fetch("http://192.168.1.4:5000/hasDate"
+				const response = await fetch("https://vkidneym.herokuapp.com/hasDate"
 				,{
 					method : 'POST',
 					cache: 'no-cache',
@@ -100,171 +113,270 @@ export default class HBVS extends React.Component{
 				})
 				const re = await response.json()
 				
-				console.log(re.length)
+				console.log(re)
 				if(re.length === 0){
-					this.setState({dates:true})
-					console.log(new Date().toLocaleDateString())
-					
+					//this.setState({dates:true})
 					this.setState({animating:false})
 				}
 				else{
-					console.log("f")
+					
 					this.setState({dates:false})
-				}
-				re.map((qu) => {
-					if(qu.dose0date == new Date().toLocaleDateString()) {
-						this.setState({dates:true,})
-					}
-					else if(qu.dose1date == new Date().toLocaleDateString()) {
-						this.setState({dates:true,doseState1:false,doseState0:true})
-					}
-					else if(qu.dose2date == new Date().toLocaleDateString()) {
-						this.setState({dates:true,doseState2:false,doseState0:true})
-					}
-					else if(qu.dose3date == new Date().toLocaleDateString()) {
-						this.setState({dates:true,doseState3:false,doseState0:true})
-					}
-					else if(qu.antibodyTestDate == new Date().toLocaleDateString()) {
-						this.setState({dates:true,doseState4:false,doseState0:true})
-					}
-				})
-				this.setState({Q:re})
+					this.setState({Q:re,buttonState:true,animating:false})
+					this.setState({notify:this.state.Q[5]})
+					this.setState({Q:this.state.Q.filter(elt => elt != "yes")})
+					this.setState({Q:this.state.Q.filter(elt => elt != "no")})
+				}	
+				
 			}catch(e){
-				console.log(e)
+				alert(e)
 			}
-			//this.setState({animating:false})
 		}
-	setDate0 = (date) => {
+	setDate(date,props) {
+	console.log("ss",props)
+	console.log(date)
+	this.setState({buttonState:false})
+	let d = date[0]+date[1]
+	let m = date[3]+date[4]
+	let y = date[6]+date[7]+date[8]+date[9]
+	
+	//console.log(Dat.getMonth() + 1)
+	//make it into sequence like add +1 into last date not the date in the parameter
 		
-		let dm = new Date(date)
-		this.setState({doseDate0:dm})
-		let d = new Date(date);
-		d.setMonth(d.getMonth() + 1)
-		console.log(d.toLocaleDateString())
-		this.setDate1(d)
+		let Dat1 = new Date(y,m,d);
+		
+	if(props == "0 Dose"){
+		
+		Dat1.setDate(Dat1.getDate()+30)
+		let nextDate1 = `${Dat1.getDate()}/${Dat1.getMonth()}/${Dat1.getFullYear()}`
+		
+		let Dat2 = new Date(Dat1.getFullYear(),Dat1.getMonth(),Dat1.getDate());
+		Dat2.setDate(Dat2.getDate()+30)
+		let nextDate2 = `${Dat2.getDate()}/${Dat2.getMonth()}/${Dat2.getFullYear()}`
+		
+		let Dat3 = new Date(Dat2.getFullYear(),Dat2.getMonth(),Dat2.getDate());
+		Dat3.setDate(Dat3.getDate()+110)
+		let nextDate3 = `${Dat3.getDate()}/${Dat3.getMonth()}/${Dat3.getFullYear()}`
+		
+		let Dat4 = new Date(Dat3.getFullYear(),Dat3.getMonth(),Dat3.getDate());
+		Dat4.setDate(Dat4.getDate()+60)
+		console.log(Dat4.getMonth())
+		
+		if(Dat4.getMonth() == "0"){ 	
+			let nextDate4 = `${Dat4.getDate()}/${Dat4.getMonth()+1}/${Dat4.getFullYear()}`
+			this.setState({Q:[date,nextDate1,nextDate2,nextDate3,nextDate4],buttonState:false})
+		}
+		else{
+			let nextDate4 = `${Dat4.getDate()}/${Dat4.getMonth()}/${Dat4.getFullYear()}`
+			this.setState({Q:[date,nextDate1,nextDate2,nextDate3,nextDate4],buttonState:false})
+		}
+		
+		
 		
 	}
-	setDate1 = (date) => {
-		this.setState({doseDate1:date})
-		let d = new Date(date);
-		console.log(d.getFullYear())
-		d.setMonth(d.getMonth() + 1)
-		d.toLocaleDateString()
+	if(props == "1st Dose"){
 		
-		this.setDate2(d);
+		let Dat2 = new Date(Dat1.getFullYear(),Dat1.getMonth(),Dat1.getDate());
+		Dat2.setDate(Dat2.getDate()+30)
+		if(Dat2.getMonth() == "0"){ parseInt(Dat2.getMonth())+1}
+		let nextDate2 = `${Dat2.getDate()}/${Dat2.getMonth()}/${Dat2.getFullYear()}`
+		
+		let Dat3 = new Date(Dat2.getFullYear(),Dat2.getMonth(),Dat2.getDate());
+		Dat3.setDate(Dat3.getDate()+120)
+		if(Dat3.getMonth() == "0"){ parseInt(Dat3.getMonth())+1}
+		let nextDate3 = `${Dat3.getDate()}/${Dat3.getMonth()}/${Dat3.getFullYear()}`
+		
+		let Dat4 = new Date(Dat3.getFullYear(),Dat3.getMonth(),Dat3.getDate());
+		Dat4.setDate(Dat4.getDate()+60)
+		
+		if(Dat4.getMonth() == 0){ console.log("0")  
+			parseInt(Dat4.getMonth())+1
+		}
+		let nextDate4 = `${Dat4.getDate()}/${Dat4.getMonth()}/${Dat4.getFullYear()}`
+		
+		this.setState({Q:[this.state.Q[0],date,nextDate2,nextDate3,nextDate4],buttonState:false})
 	}
-	setDate2 = (date) => {
-		this.setState({doseDate2:date,})
-		let d = new Date(date);
-		d.setMonth(d.getMonth() + 4)
-		this.setDate3(d);
-	}
-	setDate3 = (date) => {
-		this.setState({doseDate3:date})
-		let d = new Date(date);
-		d.setMonth(d.getMonth() + 2)
-		this.abtDate(d)
-	}
-	abtDate = (date) => {
-		this.setState({abtDate:date})
-	}
-	insertDate = async() =>{
+	if(props == "2nd Dose"){
 		
 		
-		console.log(this.state.doseDate)
+		let Dat3 = new Date(Dat1.getFullYear(),Dat1.getMonth(),Dat1.getDate());
+		Dat3.setDate(Dat3.getDate()+120)
+		if(Dat3.getMonth() == "0"){ parseInt(Dat3.getMonth())+1}
+		let nextDate3 = `${Dat3.getDate()}/${Dat3.getMonth()}/${Dat3.getFullYear()}`
+		
+		let Dat4 = new Date(Dat3.getFullYear(),Dat3.getMonth(),Dat3.getDate());
+		Dat4.setDate(Dat4.getDate()+60)
+		if(Dat4.getMonth() == "0"){ console.log("0") 
+			parseInt(Dat4.getMonth())+1
+		}
+		let nextDate4 = `${Dat4.getDate()}/${Dat4.getMonth()}/${Dat4.getFullYear()}`
+		
+		this.setState({Q:[this.state.Q[0],this.state.Q[1],date,nextDate3,nextDate4],buttonState:false})
+	}
+	
+	if(props == "3rd Dose"){
+		//use filter for month == 0
+	
+		let Dat4 = new Date(Dat1.getFullYear(),Dat1.getMonth(),Dat1.getDate());
+		Dat4.setDate(Dat4.getDate()+60)
+		let nextDate4 = `${Dat4.getDate()}/${Dat4.getMonth()}/${Dat4.getFullYear()}`
+		
+		this.setState({Q:[this.state.Q[0],this.state.Q[1],this.state.Q[2],date,nextDate4],buttonState:false})
+	}
+	
+	if(props == "Antibody Test"){
+		this.setState({Q:[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],date],buttonState:false})
+	}
+	
+	if(props == "Boosterdose"){
+			
+			let Dat5 = new Date(Dat1.getFullYear(),Dat1.getMonth(),Dat1.getDate());
+			Dat5.setDate(Dat5.getDate()+60)
+			
+			let nextDate5 = `${Dat5.getDate()}/${Dat5.getMonth()}/${Dat5.getFullYear()}`
+			
+			this.setState({Q:[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5],doseDate1:date})
+		}
+	}
+	handleabtValuechange = (value) => {
+		this.setState({abtValue:value})
+		this.setState({buttonState:false})
+		if(parseInt(value) > 9){
+					console.log("good")
+			let Dat5 = new Date(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate());
+			console.log(Dat5.getFullYear())
+			Dat5.setDate(Dat5.getDate()+365)
+			
+			let nextDate5 = `${Dat5.getDate()}/${Dat5.getMonth()}/${Dat5.getFullYear()}`
+			
+			this.setState({Q:[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5]})
+		}
+		}
+	
+	antibodyValue = () => {
+		
+		if(this.state.abtValue == "0"){
+			return (
+				<View>
+					<Text style={styles.atest}> Note : Go for new form</Text>
+				</View>
+			)
+		}
+		else if(parseInt(this.state.abtValue) > 1 && parseInt(this.state.abtValue) <9){
+			return (
+				<View>
+					<Text style={styles.atest}> Note : Go for Booster dose</Text>
+					<View style={{flexDirection:'row',marginBottom:2,},styles.datesContainer}>
+				
+						<Text style={{marginBottom:10,fontSize:15,}}>Booster dose Date : </Text>
+						<DatePicker  
+							date={this.state.doseDate1}
+							 style={{width:220,marginLeft:40,marginBottom:2}}  mode="date" 
+							format="DD/MM/YYYY"
+							value={this.state.doseDate1} onDateChange={(date) => this.setDate(date,"Boosterdose")}/>
+					</View>
+				</View>
+			)
+		}
+		else if(parseInt(this.state.abtValue) > 9){
+			return (
+				<View>
+					<Text style={styles.atest}>Note : Go for antibody test after a year</Text>
+				</View>
+			)
+		}
+	}
+	
+	insertDate = async() =>{	
+		console.log("s",this.state.Q[0])
 		this.setState({animating:true})
-		
-		const response = await fetch("http://192.168.1.4:5000/DoseInsert",{
+		if(this.state.abtValue == "0"){ 
+			this.setState({Q:[todayDate],abtValue:'',})
+		}
+		const response = await fetch("https://vkidneym.herokuapp.com",{
 					method : 'POST',
 					cache: 'no-cache',
 					credentials:'include',
 					headers : {'Content-Type': 'application/json'},
 					body:JSON.stringify({Email:this.props.navigation.state.params.name,
-					dose0:`${this.state.doseDate0.getDate()}/${this.state.doseDate0.getMonth()}/${this.state.doseDate0.getFullYear()}`,
-					dose1:`${this.state.doseDate1.getDate()}/${this.state.doseDate1.getMonth()}/${this.state.doseDate1.getFullYear()}`,
-					dose2:`${this.state.doseDate2.getDate()}/${this.state.doseDate2.getMonth()}/${this.state.doseDate2.getFullYear()}`,
-					dose3:`${this.state.doseDate3.getDate()}/${this.state.doseDate3.getMonth()}/${this.state.doseDate3.getFullYear()}`,
-					abtDate:`${this.state.abtDate.getDate()}/${this.state.abtDate.getMonth()}/${this.state.abtDate.getFullYear()}`,
+					dose0:`${this.state.Q[0]}`,
+					dose1:`${this.state.Q[1]}`,
+					dose2:`${this.state.Q[2]}`,
+					dose3:`${this.state.Q[3]}`,
+					abtDate:`${this.state.Q[4]}`,
 					Token:this.state.expoPushToken}),
 				})
 				const res= await response.text()
 				console.log(res)
+				this.setState({animating:false})
 				if(res == "ok"){
+					this.setState({buttonState:true})
 					alert(`Your dose  details has been set for notification`)
-					this.dateInserted()
 				}else{
 					alert("Some thing went wrong")
 				}		
 	}
 	
+	selectDates = (Qu,indexOfQ) => {
+		
+		return (
+		
+			<View style={{flexDirection:'row',}}>
+			<Text style={{fontSize:18}}>{this.state.doseType[indexOfQ]} : </Text>
+				{Qu  == todayDate ? 
+					<DatePicker  
+						date={Qu} style={{width:220}}  mode="date" 
+						format="DD/MM/YYYY"
+						value={this.state.doseDate} onDateChange={(date) => this.setDate(date,this.state.doseType[indexOfQ])}/>
+						:
+						<Text style={{fontSize:18}}>{Qu}</Text>	
+				}
+				
+			</View>
+			
+			
+		)
+	}
 	render(){
-		if(this.state.dates){
-			if(this.state.animating){
+		if(this.state.animating){
 				return(
-					<ActivityIndicator  animating = {this.state.animating} color = 'red'size = "large"style={styles.activityIndicator}/>
+					<ActivityIndicator  animating = {this.state.animating} color = 'red' size = "large"style={styles.activityIndicator}/>
 				)
 			}
-		return(
-			<View Style={styles.container}>
-			
-				<ScrollView>
-				<View style={styles.datesContainer}>
-				<Button title="Submit" onPress={this.insertDate} />
-				<Text></Text>
-					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>0 Dose : </Text><DatePicker  date={this.state.doseDate0} style={{width:220}}  mode="date" value={this.state.doseDate0} onDateChange={this.setDate0}/>					
-					</View>
-						<Text style={styles.Notes}>Note : You need to take next dose after one month and notification will be sent for the same.</Text>					
-						
-				</View>
-				
-				<View style={styles.datesContainer}>
-					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>1st Dose : </Text><DatePicker date={this.state.doseDate1} style={{width:220}} disabled={this.state.doseState1} mode="date" value={this.state.doseDate1} onDateChange={this.setDate1}/>					
-					</View>
-						<Text style={styles.Notes}>Note: You need to take next dose after one month and notification will be sent for the same.</Text>
-				</View>
-				
-				<View style={styles.datesContainer}>
-					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>2nd Dose : </Text><DatePicker date={this.state.doseDate2} style={{width:220}} disabled={this.state.doseState2} mode="date" value={this.state.doseDate2} onDateChange={this.setDate2}/>					
-					</View>
-						<Text style={styles.Notes}>Note : You need  to take next dose after four months and notification will be sent for the same.</Text>						
-				</View>
-				
-				<View style={styles.datesContainer}>
-					<View style={{flexDirection:'row',}}>
-						<Text style={styles.dates,{fontSize:20,}}>3rd Dose : </Text><DatePicker date={this.state.doseDate3} style={{width:220}} disabled={this.state.doseState3} mode="date" value={this.state.doseDate3} onDateChange={this.setDate3}/>					
-					</View>
-						<Text style={styles.Notes}>Note : You need to go for antibody test after two months and notification will be sent for the same.</Text>				
-				</View>
-					
-				<View style={{flex:3,alignItems: 'center',}}>
-				<Text style={{fontSize:20}}> Antibody test</Text>
-					<View style={{flexDirection:'row',marginTop:12,}}>
-						<Text style={styles.dates,{fontSize:17,}}> Antibody test date: </Text><DatePicker date={this.state.abtDate} style={{width:220}} disabled={this.state.doseState3} mode="date" value={this.state.abtDate} onDateChange={this.abtDate}/>					
-					</View>
-						<Text style={styles.Notes}>Note : You need to go for antibody test after two months and notification will be sent for the same.</Text>				
-					</View>		
-				</ScrollView>	
-		</View>				
-		)
-		}
-		if(!this.state.dates){
+		else{
 			return(
-				<View>
+				<ScrollView>
+				
 					{this.state.Q.map((Qu) => 
-							<View style={{alignItems: 'center',marginTop:20,marginBottom:20,}}>
-								<Text style={{marginLeft:20,marginRight:20,fontSize:20,fontWeight: "bold",textAlign:'justify'}}>Dose0 :{Qu.dose0date}</Text>						
-								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose1:{Qu.dose1date}</Text>
-								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose2:{Qu.dose2date}</Text>
-								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>Dose3:{Qu.dose3date}</Text>
-								<Text style={{marginLeft:20,marginRight:20,fontSize:20,textAlign:'justify',fontWeight: "bold" }}>antibodyTestDate:{Qu.antibodyTestDate}</Text>
-							</View>)
-					}
-				</View>
+						<View style={styles.datesContainer}>
+							{this.selectDates(Qu,this.state.Q.indexOf(Qu))}
+								
+							{doseType[this.state.Q.indexOf(Qu)] == "Antibody Test" && this.state.Q[4] == todayDate ?
+								<TextInput placeholder="Antibody test value" maxLength={4}
+									style={{fontSize:19,height:40,borderRightWidth:1,
+									paddingLeft:5,borderTopWidth:1,borderLeftWidth:1,borderBottomWidth:1,
+									margin:10,
+									marginLeft:100,
+									borderColor:'grey'}}
+									value={this.state.abtValue}
+									onChangeText = {this.handleabtValuechange} 
+									keyboardType="numeric" underlineColorAndroid={'transparent'}/>
+									:
+								<Text style={styles.Notes}>Note :
+									{this.state.month[this.state.Q.indexOf(Qu)]}
+								</Text>
+							}
+						</View>	
+					
+
+					)}
+					{this.antibodyValue()}
+					<View style={{margin:10}}>
+					<Button title="Submit" onPress={this.insertDate} disabled={this.state.buttonState} />	
+				</View>	
+				</ScrollView>									
+				
 			)
 		}
-			
 	}
 }
+		
