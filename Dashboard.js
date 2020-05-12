@@ -4,7 +4,8 @@ import Constants from 'expo-constants';
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
-
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 import { SliderBox } from "react-native-image-slider-box";
 
 const style = StyleSheet.create({
@@ -51,6 +52,7 @@ export default class Dashboard extends React.Component{
   constructor(props){
     super(props);
     this.state ={
+		expoPushToken:'',
       Dashboard:false,
 	  images: [
         //"https://source.unsplash.com/1024x768/?tree", // Network image
@@ -60,7 +62,48 @@ export default class Dashboard extends React.Component{
 		require('./assets/Vaccines_iStock.jpg'),
       ],
     }
+	this.registerForPushNotificationsAsync()
+	
   }
+	
+	registerForPushNotificationsAsync = async () => {
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = await Notifications.getExpoPushTokenAsync();
+      console.log(token);
+      this.setState({ expoPushToken: token });
+	  this.sendToken()
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  }
+  
+	
+	sendToken = async () => {
+	  	try{
+		const response = await fetch("http://192.168.1.4:5000/rToken"
+				,{
+					method : 'POST',
+					cache: 'no-cache',
+					credentials:'include',
+					headers : {'Content-Type': 'application/json'},
+					body:JSON.stringify({Email:this.props.navigation.state.params.name,Token:this.state.expoPushToken}),
+				})
+				
+				//console.log(re)		
+		}catch(e){alert(e)}
+  }
+  
+  
 	q = () =>{
 		 {this.props.navigation.navigate("Fifth")}
 	}
@@ -99,7 +142,8 @@ export default class Dashboard extends React.Component{
 			</View>
 			
 			<View style={{ marginTop:10}}>
-				<TouchableOpacity style={style.input,{backgroundColor:"#ff7675",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={this.login}>
+				<TouchableOpacity style={style.input,{backgroundColor:"#ff7675",width:350,height:120,justifyContent: 'center',borderRadius:15, }}
+				onPress={()=>{this.props.navigation.navigate("Eleven",{name:`${this.props.navigation.state.params.name}`})}}>
 					<View style={{flexDirection:'row'}}>
 						<Ionicons style={{marginLeft:10,}} name="calendar-alt" size={35} col/>
 						<Text style={ style.buttonText} > Pneumococcal Vaccine Schedule</Text>
@@ -107,9 +151,10 @@ export default class Dashboard extends React.Component{
 				</TouchableOpacity>
 			</View>
 			
-			
 			<View style={{marginTop:10 }}>
-				<TouchableOpacity style={style.input,{backgroundColor:"#fdcb6e",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={this.login}>
+				<TouchableOpacity style={style.input,{backgroundColor:"#fdcb6e",width:350,height:120,
+				justifyContent: 'center',borderRadius:15, }} 
+				onPress={()=>{this.props.navigation.navigate("Tweleve",{name:`${this.props.navigation.state.params.name}`})}}>
 					<View style={{flexDirection:'row'}}>
 						<Ionicons style={{marginLeft:10,}} name="calendar-alt" size={35} />
 						<Text style={ style.buttonText} > Influenza Vaccine Schedule</Text>

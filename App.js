@@ -3,8 +3,8 @@ import React from 'react';
 import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 
 import Constants from 'expo-constants';
-
-
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 
 import LoginView from './login.js'
 import Urc from './Urc.js'
@@ -17,7 +17,8 @@ import qA from './qA'
 import Gain from './Gain'
 import QaHindi from './QaHindi'
 import HBVS from './HBVS'
-import HBVS2 from './hbvs2'
+import PVS from './Pvs'
+import IVS from './Ivs'
 
 import AboutUs from './aboutUs'
 
@@ -32,7 +33,8 @@ const NavStack = createStackNavigator({
   Eight:Gain,
   Nine:Urc,
   Ten:AboutUs,
-  Eleven:HBVS2,
+  Eleven:PVS,
+  Tweleve:IVS,
 },
  {
   defaultNavigationOptions: {
@@ -47,10 +49,17 @@ const AppNavigator = createAppContainer(NavStack);
 export default class App extends React.Component{
   constructor(props){
     super(props);
+	this.state={
+		expoPushToken:'',
+	}
 	
+	//this.registerForPushNotificationsAsync()
+	//this.sendToken()
   } 
   
   
+   
+	
   
   
   render(){

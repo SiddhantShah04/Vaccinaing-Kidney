@@ -169,9 +169,6 @@ export default class HBVS extends React.Component{
 			let nextDate4 = `${Dat4.getDate()}/${Dat4.getMonth()}/${Dat4.getFullYear()}`
 			this.setState({Q:[date,nextDate1,nextDate2,nextDate3,nextDate4],buttonState:false})
 		}
-		
-		
-		
 	}
 	if(props == "1st Dose"){
 		
@@ -292,7 +289,7 @@ export default class HBVS extends React.Component{
 		if(this.state.abtValue == "0"){ 
 			this.setState({Q:[todayDate],abtValue:'',})
 		}
-		const response = await fetch("https://vkidneym.herokuapp.com",{
+		const response = await fetch("https:vkidneym.herokuapp.com/DoseInsert",{
 					method : 'POST',
 					cache: 'no-cache',
 					credentials:'include',
