@@ -134,10 +134,7 @@ export default class LoginView extends React.Component{
         <TouchableHighlight onPress={()=>{{this.props.navigation.navigate("Two")}}}>
             <Text style={{color:'blue',marginTop:30,fontSize:15,}} >Create a new account</Text>
         </TouchableHighlight>
-		
-		
         </View>
-		
       </View>
     )
   }

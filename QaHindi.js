@@ -28,7 +28,6 @@ export default class QaHindi extends React.Component{
 		
 			const response = await fetch("https://vkidneym.herokuapp.com/QnAHindi")
 			const re = await response.json()
-			//re.map(this.QA)
 			this.setState({Q:re})
 	}
 			
@@ -40,7 +39,6 @@ export default class QaHindi extends React.Component{
 						{this.state.Q.map((Qu) => 
 							<View style={{alignItems: 'center',marginTop:20,marginBottom:20,}}>
 								<Text style={{marginLeft:20,marginRight:20,fontSize:20,fontWeight: "bold",textAlign:'justify' }}>{Qu.Question}</Text>
-						
 								<Text style={{marginLeft:20,marginRight:20,fontSize:19,textAlign:'justify' }}>{Qu.Answer}</Text>
 						
 						</View>)

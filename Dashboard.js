@@ -37,6 +37,7 @@ const style = StyleSheet.create({
 //onPress={()=> alert("Pressed")}
  
 //const AppNav = createAppContainer(Nav);
+//TouchableWithoutFeedback 
 
 export default class Dashboard extends React.Component{
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -46,6 +47,7 @@ export default class Dashboard extends React.Component{
     },  
 	headerTitle:"Kidnified",	
 	headerLeft: () =><Ionicons name="bars"size={30} style={{marginLeft:13,color:'blue'}} onPress={(props)=>{navigation.navigate('Fouth',{name:`${navigation.state.params.name}`})}}/>,
+	headerRight: () =><Ionicons name="bars"size={30} style={{color:'blue'}} onPress={(props)=>{navigation.navigate('Thirteen',{name:`${navigation.state.params.name}`})}}/>,
   })
   text = " Ideal Interdialytic Weight Gain \n Calculator"
 
@@ -90,7 +92,7 @@ export default class Dashboard extends React.Component{
 	
 	sendToken = async () => {
 	  	try{
-		const response = await fetch("http://192.168.1.4:5000/rToken"
+		const response = await fetch("https://vkidneym.herokuapp.com/rToken"
 				,{
 					method : 'POST',
 					cache: 'no-cache',
@@ -131,7 +133,6 @@ export default class Dashboard extends React.Component{
 				</TouchableOpacity>
 			</View>
 			
-			
 			<View style={{ marginTop:10}}>
 				<TouchableOpacity  style={style.input,{backgroundColor:"#b6c617",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={()=>{this.props.navigation.navigate("Sixth",{name:`${this.props.navigation.state.params.name}`})}}>
 					<View style={{flexDirection:'row'}}>
@@ -161,8 +162,6 @@ export default class Dashboard extends React.Component{
 					</View>
 				</TouchableOpacity>
 			</View>
-			
-			
 			
 			<View style={{marginTop:10 }}>
 				<TouchableOpacity style={style.input,{backgroundColor:"#8293ee",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={()=>{this.props.navigation.navigate("Nine")}}>

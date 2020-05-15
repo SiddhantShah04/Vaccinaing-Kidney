@@ -19,6 +19,7 @@ import QaHindi from './QaHindi'
 import HBVS from './HBVS'
 import PVS from './Pvs'
 import IVS from './Ivs'
+import Comment from './Comment.js'
 
 import AboutUs from './aboutUs'
 
@@ -35,6 +36,7 @@ const NavStack = createStackNavigator({
   Ten:AboutUs,
   Eleven:PVS,
   Tweleve:IVS,
+  Thirteen:Comment,
 },
  {
   defaultNavigationOptions: {
@@ -52,16 +54,7 @@ export default class App extends React.Component{
 	this.state={
 		expoPushToken:'',
 	}
-	
-	//this.registerForPushNotificationsAsync()
-	//this.sendToken()
   } 
-  
-  
-   
-	
-  
-  
   render(){
     return(
       <AppNavigator />
