@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome5';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import { SliderBox } from "react-native-image-slider-box";
@@ -38,7 +39,7 @@ const style = StyleSheet.create({
  
 //const AppNav = createAppContainer(Nav);
 //TouchableWithoutFeedback 
-
+//<FontAwesome5 name="comment-medical" size={24} color="black" />
 export default class Dashboard extends React.Component{
   static navigationOptions = ({ navigation, screenProps }) => ({
 	  
@@ -47,7 +48,7 @@ export default class Dashboard extends React.Component{
     },  
 	headerTitle:"Kidnified",	
 	headerLeft: () =><Ionicons name="bars"size={30} style={{marginLeft:13,color:'blue'}} onPress={(props)=>{navigation.navigate('Fouth',{name:`${navigation.state.params.name}`})}}/>,
-	headerRight: () =><Ionicons name="bars"size={30} style={{color:'blue'}} onPress={(props)=>{navigation.navigate('Thirteen',{name:`${navigation.state.params.name}`})}}/>,
+	headerRight: () =><FontAwesome5  name="comment-medical" size={30} style={{marginRight:7,color:'blue'}} onPress={(props)=>{navigation.navigate('Thirteen',{name:`${navigation.state.params.name}`})}}/>,
   })
   text = " Ideal Interdialytic Weight Gain \n Calculator"
 

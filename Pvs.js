@@ -63,7 +63,6 @@ export default class PVS extends React.Component{
 		this.dateInserted()
 	}
 	
-	
 	dateInserted = async() => {
 		const re = await  getDosevs(this.props.navigation.state.params.name,"dosePvs")
 				console.log(re)
@@ -71,11 +70,8 @@ export default class PVS extends React.Component{
 					this.setState({animating:false})
 				}
 				else{
-					
 					this.setState({Q:re,buttonState:true,animating:false})
-				}	
-				
-		
+				}		
 		}
 	
 	insertDose = async() => {
@@ -89,7 +85,6 @@ export default class PVS extends React.Component{
 					alert("Some thing went wrong")
 				}		
 		}
-	
 	setDate (date,type){
 		console.log(type)
 		//let Dat1 = new Date(y,m,d);
@@ -100,10 +95,8 @@ export default class PVS extends React.Component{
 		}
 		//let nextDate1 = `${Dat1.getDate()}/${Dat1.getMonth()}/${Dat1.getFullYear()}`
 		this.setState({Q:[date,nextDate],buttonState:false})
-		
 	}
 	render(){
-		
 		if(this.state.animating){
 				return(
 					<ActivityIndicator  animating = {this.state.animating} color = 'red' size = "large"style={styles.activityIndicator}/>

@@ -66,3 +66,35 @@ export const getDosevs  =  async(Email,type) => {
 		
 	}catch(e){alert(e)}
 }
+export const Post = async(Email,text) => {
+	try{
+		const response = await fetch("https://vkidneym.herokuapp.com/Post",{
+		method : 'POST',
+			cache: 'no-cache',
+			credentials:'include',
+			headers : {'Content-Type': 'application/json'},
+			body:JSON.stringify({Email:Email,text:text}),
+		})
+		const result = await response.text()
+			if(result == "ok"){
+				console.log("ok")
+				}else{
+					alert("Some thing went wrong")
+				}	
+		
+	}catch(e){alert(e)}
+}
+
+export const commentSend= async(Email,postId,text,) => { 
+try{
+		const response = await fetch("https://vkidneym.herokuapp.com/Comment",{
+		method : 'POST',
+			cache: 'no-cache',
+			credentials:'include',
+			headers : {'Content-Type': 'application/json'},
+			body:JSON.stringify({Email:Email,postId:postId,text:text}),
+		})
+		const result = await response.json()
+		return(result)
+	}catch(e){alert(e)}
+}
