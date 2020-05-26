@@ -20,7 +20,7 @@ import DatePicker from 'react-native-datepicker';
 import Constants from 'expo-constants';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import Ionicons from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/FontAwesome5';
 // You can import from local files
 // You can import from local files
 
@@ -68,7 +68,8 @@ export default class SignUp extends React.Component {
 		Age : '',
 		contactNumber : '',
 		confPassword:'',
-		animating: false
+		animating: false,
+		userName:'',
 	}
     
   }
@@ -89,7 +90,7 @@ export default class SignUp extends React.Component {
 			cache: 'no-cache',
 			credentials:'include',
 			headers : {'Content-Type': 'application/json'},
-			body:JSON.stringify({fullName:this.state.fullName,gender:this.state.gender,Email:this.state.Email,Password:this.state.password,
+			body:JSON.stringify({fullName:this.state.fullName,userName:this.state.userName,gender:this.state.gender,Email:this.state.Email,Password:this.state.password,
 			age:this.state.age,contactNumber:this.state.contactNumber}),
 			})
 				const res= await response.text()
@@ -139,6 +140,9 @@ export default class SignUp extends React.Component {
 		}
 		
 	}
+	handleuserNamechange = (name) => {
+		this.setState({userName:name})
+	}
 
   render() {
     return (
@@ -148,6 +152,13 @@ export default class SignUp extends React.Component {
 					<Ionicons name="user" size={28}/>
 					<TextInput placeholder="Full name"   underlineColorAndroid={'transparent'} style={{marginLeft:15,fontSize:20,}} value={this.state.fullName}
               				onChangeText = {this.handleFullnamechange}/>
+				</View>
+				
+				 
+				<View style={styles.data}>
+					<Ionicons name="user-tie" size={28}/>
+					<TextInput placeholder="User name"   underlineColorAndroid={'transparent'} style={{marginLeft:15,fontSize:20,}} value={this.state.userName}
+              				onChangeText = {this.handleuserNamechange}/>
 				</View>
 				
 				<View style={styles.data}>
@@ -167,7 +178,7 @@ export default class SignUp extends React.Component {
 				
 				<View style={styles.data}>
 					<Ionicons name="lock" size={28} onPress={() => {alert("ok")}}/>
-					<TextInput placeholder="Password"  value={this.state.password} onChangeText = {this.handlePasswordchange} secureTextEntry={true} style={{marginLeft:15}}  underlineColorAndroid={'transparent'}/>
+					<TextInput placeholder="Password"  value={this.state.password} onChangeText = {this.handlePasswordchange} secureTextEntry={true} style={{marginLeft:15,fontSize:20}}  underlineColorAndroid={'transparent'}/>
 					<Ionicons name="eye-slash" size={25} style={{marginLeft:190,fontSize:20}}/>
 				</View>
 				<View style={styles.data}>
@@ -188,9 +199,7 @@ export default class SignUp extends React.Component {
 					</Picker>
 					</View>	
 				</View>
-				
 			</View>
-
 			<View style={{marginTop:50,margin:25}}>
 					<Button title="Sign Up" onPress={this.Registartion}/>
 				</View>

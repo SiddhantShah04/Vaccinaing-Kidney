@@ -19,6 +19,7 @@ import QaHindi from './QaHindi'
 import HBVS from './HBVS'
 import PVS from './Pvs'
 import IVS from './Ivs'
+import BUN from './Bun'
 import Comment from './Comment.js'
 
 import AboutUs from './aboutUs'
@@ -37,6 +38,7 @@ const NavStack = createStackNavigator({
   Eleven:PVS,
   Tweleve:IVS,
   Thirteen:Comment,
+  fourteen:BUN,
 },
  {
   defaultNavigationOptions: {

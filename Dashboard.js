@@ -177,11 +177,20 @@ export default class Dashboard extends React.Component{
 				<TouchableOpacity style={style.input,{backgroundColor:"#5f6714",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={()=>{this.props.navigation.navigate("Eight")}}>
 					<View style={{flexDirection:'row'}}>
 						<Ionicons style={{marginLeft:10,marginTop:10,}} name="calculator" size={35} />
-						<Text style={ style.buttonText} >{this.text}</Text>
-									
+						<Text style={ style.buttonText} >{this.text}</Text>				
+					</View>
+				</TouchableOpacity>
+			</View>	
+
+			<View style={{marginTop:10 }}>
+				<TouchableOpacity style={style.input,{backgroundColor:"#8293ee",width:350,height:120,justifyContent: 'center',borderRadius:15, }} onPress={()=>{this.props.navigation.navigate("fourteen")}}>
+					<View style={{flexDirection:'row'}}>
+						<Ionicons style={{marginLeft:10,}} name="calculator" size={35} />
+						<Text style={ style.buttonText} >Lab values interpretation</Text>
 					</View>	
 				</TouchableOpacity>
-			</View>			
+			</View>	
+				
 		</View>
       </ScrollView>                    
     )

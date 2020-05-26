@@ -15,7 +15,7 @@ export const fetchDose = async(Email) => {
 
 export const addDose = async(Email,doseData) => {
 	try{
-		const response = await fetch("https:vkidneym.herokuapp.com/DoseInsert",{
+		const response = await fetch("http:192.168.1.4:5000/DoseInsert",{
 					method : 'POST',
 					cache: 'no-cache',
 					credentials:'include',
@@ -28,8 +28,8 @@ export const addDose = async(Email,doseData) => {
 					abtDate:`${doseData[4]}`,}),
 				})
 				const result = await response.text()
-				if(res == "ok"){
-					this.setState({buttonState:true})
+				if(result == "ok"){
+					
 					alert(`Your dose  details has been set for notification`)
 				}else{
 					alert("Some thing went wrong")
@@ -75,24 +75,20 @@ export const Post = async(Email,text) => {
 			headers : {'Content-Type': 'application/json'},
 			body:JSON.stringify({Email:Email,text:text}),
 		})
-		const result = await response.text()
-			if(result == "ok"){
-				console.log("ok")
-				}else{
-					alert("Some thing went wrong")
-				}	
+		const result = await response.json()
+		return(result)
 		
 	}catch(e){alert(e)}
 }
 
-export const commentSend= async(Email,postId,text,) => { 
+export const commentSend= async(commentId,Email,postId,text,) => { 
 try{
 		const response = await fetch("https://vkidneym.herokuapp.com/Comment",{
 		method : 'POST',
 			cache: 'no-cache',
 			credentials:'include',
 			headers : {'Content-Type': 'application/json'},
-			body:JSON.stringify({Email:Email,postId:postId,text:text}),
+			body:JSON.stringify({commentId:commentId,Email:Email,postId:postId,text:text}),
 		})
 		const result = await response.json()
 		return(result)

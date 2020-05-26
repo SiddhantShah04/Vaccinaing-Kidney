@@ -104,7 +104,7 @@ export default class LoginView extends React.Component{
     return(
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text accessibilityRole='header' style={{color:'white',fontSize:35,fontWeight:'bold',}}>Kidnified</Text>
+          <Text style={{color:'white',fontSize:35,fontWeight:'bold',}}>Kidnified</Text>
         
         </View>
         <View style={styles.login}>

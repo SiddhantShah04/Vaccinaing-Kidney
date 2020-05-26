@@ -70,7 +70,7 @@ export default class HBVS extends React.Component{
 			month:[" You need to take next dose after One month and notification will be sent for the same",
 			" You need to take next dose after One month and notification will be sent for the same",
 			"You need to take next dose after Four Months and notification will be sent for the same" 
-			,"You need to take next dose after Two months and notification will be sent for the same","Next Dose based on Antibody Value"]
+			,"You need to take antibody test after two months and notification will be sent for the same","Next Dose based on Antibody Value"]
 		}
 			this.dateInserted()
 	}
@@ -122,14 +122,7 @@ setDate(date,props) {
 	handleabtValuechange = (value) => {
 		this.setState({abtValue:value})
 		this.setState({buttonState:false})
-		if(parseInt(value) > 9){
-					console.log("good")
-			let Dat5 = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
-			Dat5.setDate(Dat5.getDate()+365)
-			let nextDate5 = `${Dat5.getDate()}/${parseInt(Dat5.getMonth())+1}/${Dat5.getFullYear()}`
-			
-			this.setState({Q:[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5]})
-		}
+		
 		}
 	
 	antibodyValue = () => {
@@ -172,8 +165,19 @@ setDate(date,props) {
 		if(this.state.abtValue == "0"){ 
 			this.setState({Q:[todayDate],abtValue:'',})
 		}
+		if(this.state.abtValue > 9){
+					
+			let Dat5 = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
+			Dat5.setDate(Dat5.getDate()+365)
+			let nextDate5 = `${Dat5.getDate()}/${parseInt(Dat5.getMonth())+1}/${Dat5.getFullYear()}`
+		
+				const res= await addDose(this.props.navigation.state.params.name,[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5])
+				this.setState({animating:false,buttonState:true,Q:[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5]})
+		}else{
+	
 				const res= await addDose(this.props.navigation.state.params.name,this.state.Q)
-				this.setState({animating:false})	
+				this.setState({animating:false,buttonState:true})	
+		}
 	}
 	
 	selectDates = (Qu,indexOfQ) => {
