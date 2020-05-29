@@ -3,7 +3,7 @@ import React from 'react';
 import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 
 import Constants from 'expo-constants';
-
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -41,6 +41,7 @@ export default class Menu extends React.Component{
   }
   
   reset = ()=>{
+	  AsyncStorage.clear()
 	this.props.navigation.dispatch(logoutAction);
   }
   render(){

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
+import {Image,TouchableOpacity,TouchableHighlight,TextInput,ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 
 import Constants from 'expo-constants';
 

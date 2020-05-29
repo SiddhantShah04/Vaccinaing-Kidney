@@ -3,8 +3,8 @@ import React from 'react';
 import {Image,TouchableOpacity,KeyboardAvoidingView,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 
 import Constants from 'expo-constants';
-import { Notifications } from 'expo';
-import * as Permissions from 'expo-permissions';
+
+
 
 import LoginView from './login.js'
 import Urc from './Urc.js'
@@ -20,6 +20,7 @@ import HBVS from './HBVS'
 import PVS from './Pvs'
 import IVS from './Ivs'
 import BUN from './Bun'
+import Dc from './Dc'
 import Comment from './Comment.js'
 
 import AboutUs from './aboutUs'
@@ -39,6 +40,7 @@ const NavStack = createStackNavigator({
   Tweleve:IVS,
   Thirteen:Comment,
   fourteen:BUN,
+  Fifteen:Dc,
 },
  {
   defaultNavigationOptions: {
@@ -56,7 +58,9 @@ export default class App extends React.Component{
 	this.state={
 		expoPushToken:'',
 	}
+
   } 
+ 
   render(){
     return(
       <AppNavigator />
