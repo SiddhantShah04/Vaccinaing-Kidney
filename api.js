@@ -68,7 +68,7 @@ export const getDosevs  =  async(Email,type) => {
 }
 export const Post = async(Email,text) => {
 	try{
-		const response = await fetch("https://vkidneym.herokuapp.com/Post",{
+		const response = await fetch("http://192.168.1.5:5000/Post",{
 		method : 'POST',
 			cache: 'no-cache',
 			credentials:'include',

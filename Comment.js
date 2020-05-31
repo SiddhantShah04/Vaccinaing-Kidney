@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import  {Post, getPost,commentSend} from './api.js'
+
 const styles = StyleSheet.create({
 	container:{
 		flex:1,
@@ -37,20 +38,18 @@ const styles = StyleSheet.create({
 	  marginBottom:10,
   },
   askQuestion:{
-	  borderBottomWidth:0.4,
-	  borderLeftWidth:0.4,
-	  borderRightWidth:0.4,
-	  borderTopWidth:0.4,
-	  marginBottom:10,
-	  borderRadius:25,
-	  fontSize:20,
-	  paddingLeft:10,
+	minHeight:40,
+	
+	borderTopWidth:0.4,
+	
+	fontSize:15,
+	
 	  
   },
   questionText:{
 	fontSize:17,
 	marginTop:10,
-fontFamily: 'sans-serif',
+	fontFamily: 'sans-serif',
 	fontWeight:'bold',
 	marginLeft:10,  
   }
@@ -127,7 +126,6 @@ export default class Comment extends React.Component{
 		
 	  }
 	this.getQuestion()
-	
   }
   
   getQuestion = async() => {
@@ -140,16 +138,12 @@ export default class Comment extends React.Component{
 		this.setState({animating2:true})
 		const result = await Post( this.state.Email,this.state.Qtext)
 		this.setState({animating2:false,text:result,modalVisible:false})
-		//setTimeout(this.getQuestion, 2000);
 	}
 	 sendComment = async(id,Email,postId) => {
 		 this.setState({animating3:true,comment:''})
 		 console.log(this.state.commentId)
 		const result = await commentSend(this.state.commentId,Email,postId,this.state.comment)
-		
 		this.setState({getC:result,animating3:false,commentReplay:[],commentId:null})
-		
-		
 	 }
 	 viewCommentModel(postId,text,userId,fullName) { 
 		 this.setState({cMDetails:[text,postId,userId,fullName],commentModalVisible:true,animating3:true})
@@ -159,17 +153,13 @@ export default class Comment extends React.Component{
 		 this.setState({comment:''})
 		 const response = await fetch("https://vkidneym.herokuapp.com/Comment?postId="+postId)
 		const result = await response.json()
-		//console.log(result)
-		
 		this.setState({getC:result,animating3:false})
 	 }
 	 replay = (fullName,id) => {
 		this.setState({commentId:id,comment:`@${  fullName  }, `,defaultF:true})	
 	 }
 	viewReplay(id){
-		
 		this.setState({commentReplay:this.state.getC.filter(elt => elt.parentCommnetId == id)})
-	
 	 }
 	render(){ 
 		if(this.state.animating){
@@ -178,14 +168,14 @@ export default class Comment extends React.Component{
 				) 
 			}
 		else{
+			
 			return(
 			<>
 				<View  style={styles.container}>
-					<View style={{flexDirection:'row',alignItems:'center',justifyContent: 'center',paddingBottom:10}}>
-						<Text style={{color:'green',fontSize:25}}  onPress={() => { this.setState({modalVisible:true}) }}>Ask a Question</Text>
-						<FontAwesome5 style={{marginLeft:10}} name="question" size={24} color="green" />
+					<View style={{flexDirection:'row'}}>
+						<Text style={{flex:1,color:'grey',fontSize:15,borderRadius:35,backgroundColor:'white',borderWidth:0.4,borderColor:'grey',height:50,paddingLeft:10,paddingTop:12}}  onPress={() => { this.setState({modalVisible:true}) }}>Write something here...</Text>
 					</View>
-					<Text style={{textAlign:'center',textShadowRadius: 44,backgroundColor:'white'}}>Previously asked questions </Text>
+				
 					<ScrollView>
 						{this.state.text.map((text) => 
 								<Com changeCommentModal={() => {this.viewCommentModel(text.postId,text.text,text.userId,text.fullName)}} t={text}/>
@@ -195,14 +185,18 @@ export default class Comment extends React.Component{
 				</View>
 				
 				<Modal   visible={this.state.modalVisible}  animationType="slide">
-					<View style={{marginLeft:10,marginRight:10,marginTop:20,}}>
-						<View style={{alignItems:'center'}}>
-							<Text>Ask our doctors anything</Text>
-							<TextInput width={380} height={100} style={styles.askQuestion} multiline  placeholder="Add a Question" onChangeText ={(Qtext) => this.setState({Qtext})} />
+					<View style={{marginTop:20,marginLeft:10,marginRight:10}}>
+						<View style={{height:120,marginBottom:40,marginTop:20,borderBottomWidth:0.4,}}>
+							<TextInput style={styles.askQuestion} multiline  placeholder="What's on your mind" onChangeText ={(Qtext) => this.setState({Qtext})} />
 						</View>		
+						
+						<View style={{marginTop:20,marginLeft:5,marginRight:5}}>
+							<Button  onPress={this.sendText}  title="Post" /> 
+							<Text style={{marginTop:20}}>Note: This Chat zone is not meant to replace the recommendations of your doctor or dialysis care team. The instructions given are general instructions. Kindly remain informed that the app building team is not responsible for any misinterpretation of values.</Text>
+						</View>
 					</View>
 					
-					<Button width={400} onPress={this.sendText}  title="Post" /> 
+					
 					<ActivityIndicator  animating = {this.state.animating2} color = 'red' size = "large"style={styles.activityIndicator}/>	
 					<Text  style={{textAlign:'center'}} onPress={() => this.setState({modalVisible:false})}>Back to Question page</Text>
 			</Modal>
@@ -214,7 +208,6 @@ export default class Comment extends React.Component{
 						<Text style={{fontFamily:'sans-serif',fontWeight:'bold',fontSize:15}}>{this.state.cMDetails[3]}</Text>
 					<Text style={{fontSize:15,marginLeft:1}}>	{this.state.cMDetails[0]}</Text>
 				</View>
-				
 				<ScrollView style={{marginBottom:75}}>
 					{this.state.animating3 == true ?
 						<ActivityIndicator  animating = {this.state.animating3} color = 'red' size = "large"style={styles.activityIndicator}/>
@@ -228,13 +221,11 @@ export default class Comment extends React.Component{
 						replay={() => {this.replay(comment.fullName,comment.commentId)}} />)					
 					}				
 				</ScrollView>
-				
 				<View style={{minHeight:60,width:Dimensions.get('window').width,position: "absolute",bottom:4,flexDirection:'row'}}>
-									<TextInput style={styles.input}  autoFocus={true} multiline value={this.state.comment} onChangeText={(comment) => this.setState({comment})}  placeholder="Add a comment ..."  />
-									<View style={{position: "absolute",right:10,bottom:4,alignSelf: 'flex-end', }}>
-										<Icon name="paper-plane" size={43} color="green"  onPress={ () => this.sendComment(this.state.cMDetails[1],this.state.Email,this.state.cMDetails[1])}/>
-									</View>
-				</View>
+					<TextInput style={styles.input}  autoFocus={true} multiline value={this.state.comment} onChangeText={(comment) => this.setState({comment})}  placeholder="Add a comment ..."  />
+					<View style={{position: "absolute",right:10,bottom:4,alignSelf: 'flex-end', }}>
+						<Icon name="paper-plane" size={43} color="green"  onPress={ () => this.sendComment(this.state.cMDetails[1],this.state.Email,this.state.cMDetails[1])}/>									</View>
+					</View>
 			</Modal>
 			</>
 			)

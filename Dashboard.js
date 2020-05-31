@@ -210,18 +210,18 @@ export default class Dashboard extends React.Component{
 			
 			<View style={{flexDirection:'row',marginTop:10}}>
 					<TouchableWithoutFeedback    onPress={() => this.q("Fifteen")}>
-					<View style={{flexDirection:'row',backgroundColor:"#b6c617",width:screenWidth+5,height:140}}>
-						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="calculator" size={35} color='white' />
+					<View style={{flexDirection:'row',backgroundColor:"#734F96",width:screenWidth+5,height:140}}>
+						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="search" size={30} color='white' />
 						<Text style={style.buttonText} >Dialysis {"\n"}Centers</Text>
 						
 					</View>
 				</TouchableWithoutFeedback>
 				
 				
-				<TouchableWithoutFeedback  onPress={() => alert("Coming soon")}>
-					<View style={{flexDirection:'row',backgroundColor:"#ff7675",width:screenWidth+5,height:140,marginLeft:8}}>
-						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="xyz" size={35} color='white' />
-						<Text style={style.buttonText} >Quiz</Text>
+				<TouchableWithoutFeedback  onPress={() => this.q("Sixteen")}>
+					<View style={{flexDirection:'row',backgroundColor:"#ff005d",width:screenWidth+5,height:140,marginLeft:8}}>
+						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="search" size={30} color='white' />
+						<Text style={style.buttonText}> Search Nephrologist </Text>
 					</View>
 				</TouchableWithoutFeedback>
 				</View>

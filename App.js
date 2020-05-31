@@ -21,6 +21,7 @@ import PVS from './Pvs'
 import IVS from './Ivs'
 import BUN from './Bun'
 import Dc from './Dc'
+import Sn from './Sn'
 import Comment from './Comment.js'
 
 import AboutUs from './aboutUs'
@@ -41,6 +42,7 @@ const NavStack = createStackNavigator({
   Thirteen:Comment,
   fourteen:BUN,
   Fifteen:Dc,
+  Sixteen:Sn,
 },
  {
   defaultNavigationOptions: {

@@ -168,7 +168,7 @@ export default class SignUp extends React.Component {
 				
 				<View style={styles.data}>
 					<Ionicons name="phone-square" size={28}/>
-					<TextInput placeholder="Contact number" maxLength={10}style={{marginLeft:15,fontSize:20}} value={this.state.contactNumber} onChangeText = {this.handlecontactNumberchange} keyboardType="numeric" underlineColorAndroid={'transparent'}/>
+					<TextInput placeholder="Contact number" maxLength={10} style={{marginLeft:15,fontSize:20}} value={this.state.contactNumber} onChangeText = {this.handlecontactNumberchange} keyboardType="numeric" underlineColorAndroid={'transparent'}/>
 				</View>
 				
 					<View style={styles.data}>
