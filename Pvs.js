@@ -46,7 +46,7 @@ export default class PVS extends React.Component{
 	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 	
-	headerTitle:"Pneumococcal Vaccine Schedule",	
+	headerTitle : "    Pneumococcal Vaccine Schedule",	
 	
   })
 	
@@ -88,13 +88,17 @@ export default class PVS extends React.Component{
 	setDate (date,type){
 		console.log(type)
 		//let Dat1 = new Date(y,m,d);
+		let nextDate2
 		if(type == "PPSV 23 Vaccine : "){
-			let nextDate = addMonth(12,date)	
+			nextDate2 = addMonth(12,date)	
 		}else{
-			let nextDate = addMonth(2,date)
+			nextDate2 = addMonth(2,date)
+			console.log(nextDate2)
+			console.log("f")
 		}
 		//let nextDate1 = `${Dat1.getDate()}/${Dat1.getMonth()}/${Dat1.getFullYear()}`
-		this.setState({Q:[date,nextDate],buttonState:false})
+		this.setState({Q:[date,nextDate2],buttonState:false})
+		console.log(this.state.Q)
 	}
 	render(){
 		if(this.state.animating){
@@ -111,7 +115,7 @@ export default class PVS extends React.Component{
 				
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row'}}>
-						<Text style={styles.dates,{fontSize:20,}}>{this.state.type[this.state.Q.indexOf(Qu)]} </Text>
+						<Text style={styles.dates,{fontSize:18}}>{this.state.type[this.state.Q.indexOf(Qu)]} </Text>
 						{Qu  == todayDate ? 
 							<DatePicker style={{width:220}} 
 								format="DD/MM/YYYY"

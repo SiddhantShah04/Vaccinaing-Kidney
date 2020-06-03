@@ -23,7 +23,10 @@ import BUN from './Bun'
 import Dc from './Dc'
 import Sn from './Sn'
 import Comment from './Comment.js'
-
+import Gfr from './Gfr.js'
+import Bmi from './Bmi.js'
+import Lbm from './Lbm.js'
+import Rfc from './Rfc.js'
 import AboutUs from './aboutUs'
 
 const NavStack = createStackNavigator({
@@ -43,6 +46,10 @@ const NavStack = createStackNavigator({
   fourteen:BUN,
   Fifteen:Dc,
   Sixteen:Sn,
+  Seventeen:Gfr,
+  Eighteen:Bmi,
+  Nineteen:Lbm,
+  T:Rfc,
 },
  {
   defaultNavigationOptions: {

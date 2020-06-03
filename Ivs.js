@@ -1,9 +1,7 @@
 import React from 'react';
 import {Image,TouchableOpacity,KeyboardAvoidingView,ActivityIndicator,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
-
 import DatePicker from 'react-native-datepicker'
-
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import  {addDosevs, getDosevs} from './api.js'
@@ -12,6 +10,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { StackActions, NavigationActions } from 'react-navigation';
 import  {addMonth} from './Date.js' 
+
 const styles = StyleSheet.create({
 	container:{
 		flex:1,
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
 		
 	},
 	dates:{
-		fontSize:15,
+		fontSize:18,
 	},
 	Notes:{
 		fontSize:16,
@@ -110,9 +109,9 @@ export default class IVS extends React.Component{
 				
 				<View style={styles.datesContainer}>
 					<View style={{flexDirection:'row'}}>
-						<Text style={styles.dates,{fontSize:20,}}>{this.state.type[this.state.Q.indexOf(Qu)]} </Text>
+						<Text style={styles.dates}>{this.state.type[this.state.Q.indexOf(Qu)]} </Text>
 						{Qu  == todayDate ? 
-							<DatePicker style={{width:220}} 
+							<DatePicker style={{width:200}} 
 								format="DD/MM/YYYY"
 								disabled={this.state.doseState}
 								date={Qu} 

@@ -136,6 +136,7 @@ export default class Comment extends React.Component{
   }
 	sendText = async() => {
 		this.setState({animating2:true})
+		
 		const result = await Post( this.state.Email,this.state.Qtext)
 		this.setState({animating2:false,text:result,modalVisible:false})
 	}
@@ -185,7 +186,8 @@ export default class Comment extends React.Component{
 				</View>
 				
 				<Modal   visible={this.state.modalVisible}  animationType="slide">
-					<View style={{marginTop:20,marginLeft:10,marginRight:10}}>
+					<View style={{marginTop:10,marginLeft:10,marginRight:10}}>
+					<Icon name="times-circle" size={30} onPress={() => this.setState({modalVisible:false})} />
 						<View style={{height:120,marginBottom:40,marginTop:20,borderBottomWidth:0.4,}}>
 							<TextInput style={styles.askQuestion} multiline  placeholder="What's on your mind" onChangeText ={(Qtext) => this.setState({Qtext})} />
 						</View>		
@@ -196,15 +198,13 @@ export default class Comment extends React.Component{
 						</View>
 					</View>
 					
-					
 					<ActivityIndicator  animating = {this.state.animating2} color = 'red' size = "large"style={styles.activityIndicator}/>	
-					<Text  style={{textAlign:'center'}} onPress={() => this.setState({modalVisible:false})}>Back to Question page</Text>
+					 
+					
 			</Modal>
 			<Modal  visible={this.state.commentModalVisible}  animationType="slide">
-				<Icon name="times-circle" size={35} onPress={() => this.setState({commentModalVisible:false})} style={{color:'red',marginLeft:10,marginTop:10,marginBottom:10}}/> 
-				
+				<Icon name="times-circle" size={30} onPress={() => this.setState({commentModalVisible:false})} style={{marginLeft:10,marginTop:10,marginBottom:10}}/> 
 				<View style={{backgroundColor:'whitesmoke',marginLeft:10,marginRight:10,flexDirection:'row',paddingTop:20,paddingBottom:20}}>
-					
 						<Text style={{fontFamily:'sans-serif',fontWeight:'bold',fontSize:15}}>{this.state.cMDetails[3]}</Text>
 					<Text style={{fontSize:15,marginLeft:1}}>	{this.state.cMDetails[0]}</Text>
 				</View>
@@ -214,18 +214,17 @@ export default class Comment extends React.Component{
 						:
 						this.state.getC.filter(elt => elt.parentCommnetId == null).map((comment) =>
 						<Showcomment c={comment} getC={this.state.getC} 
-						cm={this.state.commentReplay} viewReplay = {() => {this.viewReplay(comment.commentId)}} 
-						
-						rereply ={(fullName,id) => {this.replay(fullName,id)}}
-						
-						replay={() => {this.replay(comment.fullName,comment.commentId)}} />)					
+							cm={this.state.commentReplay} viewReplay = {() => {this.viewReplay(comment.commentId)}} 
+							rereply ={(fullName,id) => {this.replay(fullName,id)}}
+							replay={() => {this.replay(comment.fullName,comment.commentId)}} />)				
 					}				
 				</ScrollView>
 				<View style={{minHeight:60,width:Dimensions.get('window').width,position: "absolute",bottom:4,flexDirection:'row'}}>
 					<TextInput style={styles.input}  autoFocus={true} multiline value={this.state.comment} onChangeText={(comment) => this.setState({comment})}  placeholder="Add a comment ..."  />
 					<View style={{position: "absolute",right:10,bottom:4,alignSelf: 'flex-end', }}>
-						<Icon name="paper-plane" size={43} color="green"  onPress={ () => this.sendComment(this.state.cMDetails[1],this.state.Email,this.state.cMDetails[1])}/>									</View>
+						<Icon name="paper-plane" size={43} color="green"  onPress={ () => this.sendComment(this.state.cMDetails[1],this.state.Email,this.state.cMDetails[1])}/>									
 					</View>
+				</View>
 			</Modal>
 			</>
 			)

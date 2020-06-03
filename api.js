@@ -14,8 +14,9 @@ export const fetchDose = async(Email) => {
 }
 
 export const addDose = async(Email,doseData) => {
+	
 	try{
-		const response = await fetch("http:192.168.1.4:5000/DoseInsert",{
+		const response = await fetch("https:vkidneym.herokuapp.com/DoseInsert",{
 					method : 'POST',
 					cache: 'no-cache',
 					credentials:'include',
@@ -68,7 +69,7 @@ export const getDosevs  =  async(Email,type) => {
 }
 export const Post = async(Email,text) => {
 	try{
-		const response = await fetch("http://192.168.1.5:5000/Post",{
+		const response = await fetch("https://vkidneym.herokuapp.com/Post",{
 		method : 'POST',
 			cache: 'no-cache',
 			credentials:'include',

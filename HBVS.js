@@ -88,8 +88,7 @@ export default class HBVS extends React.Component{
 				}	
 		}
 setDate(date,props) {
-	console.log("ss",props)
-	console.log(date)
+	
 	this.setState({buttonState:false})
 		
 	if(props == "0 Dose"){
@@ -134,7 +133,7 @@ setDate(date,props) {
 				</View>
 			)
 		}
-		else if(parseInt(this.state.abtValue) > 1 && parseInt(this.state.abtValue) <9){
+		else if(parseInt(this.state.abtValue) > 1 && parseInt(this.state.abtValue) <=9){
 			return (
 				<View>
 					<Text style={styles.atest}> Note : Go for Booster dose</Text>
@@ -178,12 +177,12 @@ setDate(date,props) {
 				const res= await addDose(this.props.navigation.state.params.name,this.state.Q)
 				this.setState({animating:false,buttonState:true})	
 		}
-	}
-	
+	}	
 	selectDates = (Qu,indexOfQ) => {
 		
-		return (
+		//if Q[5] == Dose0 then show the datePicker
 		
+		return (	
 			<View style={{flexDirection:'row',}}>
 			<Text style={{fontSize:18}}>{this.state.doseType[indexOfQ]} : </Text>
 				{Qu  == todayDate ? 

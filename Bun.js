@@ -3,16 +3,72 @@ import React from 'react';
 import {Image,Dimensions,TouchableOpacity,KeyboardAvoidingView,Modal,TouchableWithoutFeedback,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
 
 import Constants from 'expo-constants';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { StackActions, NavigationActions } from 'react-navigation';
 
+const styles=
+	 StyleSheet.create({
+		 container:{
+			 flex:1,
+			 marginLeft:10,
+			 marginTop:20,
+			 marginRight:8,
+			 
+		 },
+		 button:{
+			 width: Dimensions.get('window').width/2.3,
+			height: Dimensions.get('window').height/7,
+			borderWidth:1,	
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		 header:{
+			fontWeight:'bold',
+			fontSize:20,
+			marginBottom:10,
+			textAlign:'center',
+			marginTop:5
+		 },
+		text:{
+			marginTop:5,
+			fontSize:15,
+			paddingTop:10,
+			textAlign:'justify',
+			marginBottom:25
+		},
+		scrollView:{
+			flex:1,
+			paddingRight:15,
+			paddingLeft:10,
+			
+		},
+		input:{
+		marginTop:20,
+		borderColor: 'black',
+		borderLeftWidth:2,
+		borderRightWidth:2,
+		borderTopWidth:2,
+		borderBottomWidth: 2,
+		width:150,
+		height:45,
+		fontSize:20,
+		paddingLeft:10,
+		alignSelf:'center',
+		},
+		menu:{
+			fontSize:20,
+			borderBottomWidth:1,	
+		}
+	 })
+
+
 const Viral = (props) => {
 	
 	return(
-		<ScrollView style={styles.container}>
+		<ScrollView style={styles.scrollView}>
 			<Text style={styles.header}>Viral markers</Text>
 			<View>
 				<Image  style={{width: 330,height: 230,resizeMode: 'contain'}}  source={require('./assets/test-tubes-155769-640_orig.png')} />
@@ -26,7 +82,7 @@ const Viral = (props) => {
 }
 const Dialysis  = (props) => {
 	return(
-		<ScrollView style={styles.container}>
+		<ScrollView style={styles.scrollView}>
 			<Text style={styles.header}>Dialysis Adequacy</Text>
 			<View style={{width:10}} width={10}>
 				<Image style={{width: 330,height: 230,resizeMode: 'contain'}} source={require('./assets/Anemia.jpg')} />
@@ -80,7 +136,7 @@ const Dialysis  = (props) => {
 
 const Anemia = (props) => {
 	return(
-		<ScrollView style={styles.container}>
+		<ScrollView style={styles.scrollView}>
 			<Text style={styles.header}>Anemia</Text>
 			<View style={{width:100}} width={100}>
 				<Image  style={{width: 350,height: 200,resizeMode: 'contain'}}resizeMode="stretch" source={require('./assets/318096_2200-1200x628.jpg')} />
@@ -100,7 +156,7 @@ const Anemia = (props) => {
 
 const Nutritional = (props) => {
 	return(
-		<ScrollView style={styles.container}>
+		<ScrollView style={styles.scrollView}>
 			<Text style={styles.header}>Nutritional markers</Text>
 			<View style={{width:10}} width={10}>
 				<Image  style={{width: 380,height: 250,resizeMode: 'contain'}} resizeMode="stretch" source={require('./assets/Nutrition_test.jpg')} />
@@ -108,21 +164,21 @@ const Nutritional = (props) => {
 			<Text style={{fontSize:20,marginTop:10,marginLeft:10}}>•	Albumin </Text>
 			<Text style={styles.text}>Albumin is a complex protein made from the foods you eat each day. People on dialysis may have a low albumin level due to poor appetite or low protein food choices.   Albumin levels may also be low due to infections or inflammation.  A low level of albumin may lead to health problems such as difficulty in fighting off infections.</Text>
 			<Text style={styles.text}>Your albumin level will be monitored monthly. The ideal level is greater than 4 g/dL. If your level is less than 4, your dietitian will talk with you to identify ways to increase the amount of protein in your diet.</Text>
-			<TextInput style={styles.input}  placeholder="Albumin" value={props.viral}  keyboardType="numeric" maxLength={4} onChangeText = {props.calculateNutritional}/>
-			<Text style={{alignSelf:'center',marginTop:10,color:'red'}}> {props.result}</Text>
+			<TextInput style={styles.input}  placeholder="Albumin" value={props.viral}  keyboardType="numeric" maxLength={4} onChangeText = {props.calculateNutritionalA}/>
+			<Text style={{alignSelf:'center',marginTop:10,color:'red'}}> {props.resultNutritionalA}</Text>
 		
 			<Text style={styles.header}>Nutritional</Text>
 			<Text style={{fontSize:20,marginTop:10,marginLeft:10}}>• Potassium </Text>
 			<Text style={styles.text}>Albumin is a complex protein made from the foods you eat each day. People on dialysis may have a low albumin level due to poor appetite or low protein food choices.   Albumin levels may also be low due to infections or inflammation.  A low level of albumin may lead to health problems such as difficulty in fighting off infections.</Text>
 			<Text style={styles.text}>Your albumin level will be monitored monthly. The ideal level is greater than 4 g/dL. If your level is less than 4, your dietitian will talk with you to identify ways to increase the amount of protein in your diet.</Text>
-			<TextInput style={styles.input}  placeholder="Potassium" value={props.viral}  keyboardType="numeric" maxLength={4} onChangeText = {props.calculatePotassium}/>
-			<Text style={{alignSelf:'center',marginTop:10,color:'red'}}> {props.resultNutritional}</Text>
+			<TextInput style={styles.input}  placeholder="Potassium" value={props.viral}  keyboardType="numeric" maxLength={4} onChangeText = {props.calculateNutritionalB}/>
+			<Text style={{alignSelf:'center',marginTop:10,color:'red',marginBottom:20}}> {props.resultNutritionalB}</Text>
 		</ScrollView>
 	)
 }
 const Bone = (props) => {
 	return(
-		<ScrollView style={styles.container}>
+		<ScrollView style={styles.scrollView}>
 			<Text style={styles.header}>Bone and mineral markers</Text>
 			<View>
 				<Image style={{width: 380,height: 200,resizeMode: 'contain'}} resizeMode="stretch" source={require('./assets/bone_test.jpg')} />
@@ -156,7 +212,9 @@ export default class BUN extends React.Component {
 			 viral:0.0,
 			 viralResult:'',
 			 mode:'',
-			 resultNutritional:'',
+			 resultNutritionalA:'',
+			 anemia:'',
+			 resultNutritionalB:'',
 		 }
 	}
 		 calculate = (uPre) => {
@@ -174,30 +232,30 @@ export default class BUN extends React.Component {
 		else{this.setState({viralResult:'Repeat antibody test after 1 year'})}
 	}
 	calculateAnemia = (v)  =>{
-			if(v<=4.9){this.setState({result:'Life threatening anemia, you need to consult your doctor who may advise you to do further blood tests and if considered critical, you may be advised blood transfusion.'})}
-			else if(v>5 && v<6.9){this.setState({result:'Severely anemic, you need to consult your doctor who may advise you to do further blood tests and revise your medical prescription for erythropoietin, iron and vitamin injections.'})}
-			else if(v>7 && v<8.9){this.setState({result:'Moderately anemic, you need to consult your doctor who may advise you to do further blood tests and revise your medical prescription for erythropoietin, iron and vitamin injections.'})}
-			else if(v>9 && v<10.9){this.setState({result:'Mildly anemic, you need to consult your doctor who may advise you to do further blood tests and revise your medical prescription for erythropoietin, iron and vitamin injections.'})}
-			else if(v>11 && v<12){this.setState({result:'Normal, your doctor will suggest you a schedule of erythropoietin, iron and vitamin injections to maintain your haemoglobin in this range'})}
-			else if(v==12){this.setState({result:'High, your doctor will taper down your erythropoietin and iron injections.'})}
-			else{this.setState({result:'Invalid number'})}
+			if(v<=4.9){this.setState({anemia:'Life threatening anemia, you need to consult your doctor who may advise you to do further blood tests and if considered critical, you may be advised blood transfusion.'})}
+			else if(v>5 && v<6.9){this.setState({anemia:'Severely anemic, you need to consult your doctor who may advise you to do further blood tests and revise your medical prescription for erythropoietin, iron and vitamin injections.'})}
+			else if(v>7 && v<8.9){this.setState({anemia:'Moderately anemic, you need to consult your doctor who may advise you to do further blood tests and revise your medical prescription for erythropoietin, iron and vitamin injections.'})}
+			else if(v>9 && v<10.9){this.setState({anemia:'Mildly anemic, you need to consult your doctor who may advise you to do further blood tests and revise your medical prescription for erythropoietin, iron and vitamin injections.'})}
+			else if(v>11 && v<12){this.setState({anemia:'Normal, your doctor will suggest you a schedule of erythropoietin, iron and vitamin injections to maintain your haemoglobin in this range'})}
+			else if(v==12){this.setState({anemia:'High, your doctor will taper down your erythropoietin and iron injections.'})}
+			else{this.setState({anemia:'Invalid number'})}
 	}
 	calculateNutritional = (v) => {
-		if(v>=4){this.setState({result:'Optimal'})}
-		else if(v>3.5 && v<3.9){this.setState({result:'Mildly low, you need to visit your Renal Dietician inorder who can review your food intake in order to give you extra proteins and calories. '})}
-		else if(v>3 && v<3.4){this.setState({result:'Moderately low, you need to visit your Renal Dietician who can review your food intake in order to give you extra proteins and calories. Your Dietician may choose to give you artificial protein supplementation if you are unable to maintain optimal protein intake from food.'})}
-		else if(v<3){this.setState({result:'Severely low, you need to visit your Renal Dietician who can review your food intake in order to give you extra proteins and calories. Your Dietician may choose to give you artificial protein supplementation if you are unable to maintain optimal protein intake from food.'})}
+		if(v>=4){this.setState({resultNutritionalA:'Optimal'})}
+		else if(v>3.5 && v<3.9){this.setState({resultNutritionalA:'Mildly low, you need to visit your Renal Dietician inorder who can review your food intake in order to give you extra proteins and calories. '})}
+		else if(v>3 && v<3.4){this.setState({resultNutritionalA:'Moderately low, you need to visit your Renal Dietician who can review your food intake in order to give you extra proteins and calories. Your Dietician may choose to give you artificial protein supplementation if you are unable to maintain optimal protein intake from food.'})}
+		else if(v<3){this.setState({resultNutritionalA:'Severely low, you need to visit your Renal Dietician who can review your food intake in order to give you extra proteins and calories. Your Dietician may choose to give you artificial protein supplementation if you are unable to maintain optimal protein intake from food.'})}
 	}
 	calculatePotassium = (v) => {
-		if(v<=3.5){this.setState({resultNutritional:'Low, you need to have a high potassium diet, consult your Renal Dietician for the same.'})}
+		if(v<=3.5){this.setState({resultNutritionalB:'Low, you need to have a high potassium diet, consult your Renal Dietician for the same.'})}
 		
-		else if(v>3.5 && v<= 5.5 ){this.setState({resultNutritional:'Normal, you need to have a moderate potassium diet.'})}
+		else if(v>3.5 && v<= 5.5 ){this.setState({resultNutritionalB:'Normal, you need to have a moderate potassium diet.'})}
 		
-		else if(v>5.5  &&  v<= 6.0){this.setState({resultNutritional:'High, you need to limit potassium in your diet, consult your Renal Dietician for the same.'})}
+		else if(v>5.5  &&  v<= 6.0){this.setState({resultNutritionalB:'High, you need to limit potassium in your diet, consult your Renal Dietician for the same.'})}
 		
-		else if(v >6 && v<= 6.9){this.setState({resultNutritional:'Caution, you need to limit potassium in your diet, consult your Renal Dietician for the same'})}
+		else if(v >6 && v<= 6.9){this.setState({resultNutritionalB:'Caution, you need to limit potassium in your diet, consult your Renal Dietician for the same'})}
 		
-		else if(v > 7){this.setState({resultNutritional:'Alarming, you need to limit potassium in your diet, consult your Renal Dietician for the same'})}
+		else if(v > 7){this.setState({resultNutritionalB:'Alarming, you need to limit potassium in your diet, consult your Renal Dietician for the same'})}
 	}
 	render(){
 		return(
@@ -216,13 +274,13 @@ export default class BUN extends React.Component {
 				
 					<TouchableWithoutFeedback onPress={() => this.setState({modalVisibleViral:true,mode:'Viral'})} >
 						<View style={styles.button}>
-							<Text style={{fontSize:18,color:'blue'}}>Viral markers</Text>
+							<Text style={{fontSize:16,color:'blue'}}>Viral markers</Text>
 						</View>
 					</TouchableWithoutFeedback>
 					<View style={{marginLeft:22}}>
 						<TouchableWithoutFeedback onPress={() => this.setState({modalVisibleViral:true,mode:'Dialysis'})}>
 							<View style={styles.button}>
-								<Text style={{fontSize:18,color:'blue'}}>Dialysis Adequacy</Text>
+								<Text style={{fontSize:16,color:'blue'}}>Dialysis Adequacy</Text>
 							</View>
 						</TouchableWithoutFeedback>
 					</View>
@@ -233,13 +291,13 @@ export default class BUN extends React.Component {
 					
 					<TouchableWithoutFeedback onPress={() => this.setState({modalVisibleViral:true,mode:'Anemia'})} >
 						<View style={styles.button}>
-							<Text style={{fontSize:18,color:'blue'}}>Anemia</Text>
+							<Text style={{fontSize:16,color:'blue'}}>Anemia</Text>
 						</View>
 					</TouchableWithoutFeedback>
 						<View style={{marginLeft:22}}>
 						<TouchableWithoutFeedback onPress={() => this.setState({modalVisibleViral:true,mode:'Nutritional'})}>
 							<View style={styles.button}>
-								<Text style={{fontSize:18,color:'blue'}}>Nutritional markers</Text>
+								<Text style={{fontSize:16,color:'blue'}}>Nutritional markers</Text>
 							</View>
 						</TouchableWithoutFeedback>
 					</View>
@@ -248,41 +306,49 @@ export default class BUN extends React.Component {
 				
 				<View style={{marginTop:15}}>
 				<TouchableWithoutFeedback onPress={() => this.setState({modalVisibleViral:true,mode:'Bone'})} >
-						<View style={styles.button}>
-							<Text style={{fontSize:18,marginLeft:10,color:'blue'}}>Bone and mineral markers</Text>
+						<View  style={{borderWidth:1,width:Dimensions.get('window').width/1.1,height: Dimensions.get('window').height/7,justifyContent: 'center',}}>
+							<Text style={{fontSize:16,marginLeft:10,color:'blue',textAlign:'center'}}>Bone and mineral markers</Text>
+							
 						</View>
 					</TouchableWithoutFeedback>
 				</View>
-				<Modal visible={this.state.modalVisibleViral}  animationType="slide">
-					<Text style={{textAlign:'center',marginTop:10,color:'blue'}} onPress={ () => this.setState({modalVisibleViral:false})}>Back</Text>
+				
+				<Modal visible={this.state.modalVisibleViral}  animationType="slide" onBackButtonPress={() => this.setState({modalVisibleViral:false})}>
+					<View style={{flex:1}}>
+					<Icon name="times-circle" size={30} onPress={ () => this.setState({modalVisibleViral:false})} style={{position:'absolute',zIndex: 1,margin:5}}/> 
+						<View style={{flex:1}}>
 						{this.state.mode == 'Viral' ?
+						
 							<Viral  viral={this.state.viral} viralCal = {(v) => this.viralCal(v)}  viralResult={this.state.viralResult}/>
 						:
-						<Text></Text>
+							null
 						}
 						
 						{this.state.mode == 'Dialysis' ?
 							<Dialysis  viral={this.state.viral} post = {(v) => this.setState({uPost:v})} result={this.state.result} resultDialysis={(v) => this.calculate(v)}/>
 						:
-						<Text></Text>
+						null
 						}
 						
 					{this.state.mode == 'Anemia' ?
-							<Anemia  viral={this.state.viral}  result={this.state.result} calculateAnemia={(v) => this.calculateAnemia(v)}/>
+							<Anemia  viral={this.state.viral}  result={this.state.anemia} calculateAnemia={(v) => this.calculateAnemia(v)}/>
 						:
-						<Text></Text>
+						null
 						}
 						{this.state.mode == 'Nutritional' ?
-							<Nutritional viral={this.state.viral} resultNutritional={this.state.resultNutritional} result={this.state.result} calculateNutritional={(v) => this.calculateNutritional(v)}  calculatePotassium={(v) => this.calculatePotassium(v)} />
+							<Nutritional viral={this.state.viral} resultNutritionalA={this.state.resultNutritionalA} resultNutritionalB={this.state.resultNutritionalB} 
+							calculateNutritionalA={(v) => this.calculateNutritional(v)}  
+							calculateNutritionalB={(v) => this.calculatePotassium(v)} />
 						:
-						<Text></Text>
+						null
 						}
 						{this.state.mode == 'Bone' ?
 							<Bone  />
 						:
-						<Text></Text>
+						null
 						}
-						
+						</View>
+						</View>
 				</Modal>
 					
 				</ScrollView>
@@ -291,53 +357,3 @@ export default class BUN extends React.Component {
 		)
 	}
 }
-const styles=
-	 StyleSheet.create({
-		 container:{
-			 flex:1,
-			 marginLeft:10,
-			 marginTop:5,
-			 marginRight:8,
-			 marginBottom:0,
-		 },
-		 button:{
-			 width: Dimensions.get('window').width/2.3,
-			height: Dimensions.get('window').height/5,
-			borderWidth:1,	
-			justifyContent: 'center',
-			alignItems: 'center',
-			
-			
-			
-			 borderRadius:15,
-	
-			  
-		},
-		 header:{
-			fontWeight:'bold',
-			fontSize:20,
-		 },
-		text:{
-			marginTop:5,
-			fontSize:15,
-			paddingTop:10,
-		},
-		input:{
-		marginTop:20,
-		borderColor: 'black',
-		borderLeftWidth:2,
-		borderRightWidth:2,
-		borderTopWidth:2,
-		borderBottomWidth: 2,
-		width:150,
-		height:45,
-		fontSize:20,
-		paddingLeft:10,
-		alignSelf:'center',
-		
-		},
-		menu:{
-			fontSize:20,
-			borderBottomWidth:1,	
-		}
-	 })

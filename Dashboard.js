@@ -21,18 +21,43 @@ let screenWidth=Dimensions.get('window').width/2.3
 const Calculator = (props) => {
 	
 	return(
-		<View style={{alignSelf:'center',backgroundColor:'white',width:screenWidth+200,height:275,borderRadius:15}} >	
+		<View style={{alignSelf:'center',backgroundColor:'white',width:screenWidth+200,height:400,borderRadius:15}} >	
 			<TouchableOpacity onPress={props.calNavU} style={style.vaccineB}>
 				<View style={{textAlign:'center'}}>
 					<Text style={style.vaccineT}> Ultrafiltration Rate Calculator</Text>
 				</View>
+				
 			</TouchableOpacity>
+			
 			
 			<TouchableOpacity onPress={props.calNavI} style={style.vaccineB}>
 				<View style={{textAlign:'center'}}>
 					<Text style={style.vaccineT}> Ideal Interdialytic Weight Gain Calculator</Text>
 				</View>
 			</TouchableOpacity>
+			
+			<TouchableOpacity onPress={props.Gfr} style={style.vaccineB}>
+				<View style={{textAlign:'center'}}>
+					<Text style={style.vaccineT}>Glomerular filtration rate Calculator</Text>
+				</View>
+			</TouchableOpacity>
+			<TouchableOpacity onPress={props.BMI} style={style.vaccineB}>
+				<View style={{textAlign:'center'}}>
+					<Text style={style.vaccineT}>Body Mass Index Calculator</Text>
+				</View>
+			</TouchableOpacity>
+			<TouchableOpacity onPress={props.Lbm} style={style.vaccineB}>
+				<View style={{textAlign:'center'}}>
+					<Text style={style.vaccineT}>Lean Body Mass Calculator</Text>
+				</View>
+			</TouchableOpacity>
+			<TouchableOpacity onPress={props.Rfc} style={style.vaccineB}>
+				<View style={{textAlign:'center'}}>
+					<Text style={style.vaccineT}> Residual Renal Function Calculator</Text>
+				</View>
+			</TouchableOpacity>
+			
+			
 		</View>
 	)
 } 
@@ -62,9 +87,7 @@ const Schedule = (props) => {
 export default class Dashboard extends React.Component{
   static navigationOptions = ({ navigation, screenProps }) => ({
 	 //  const {state} = navigation;
-	headerStyle: {
-        backgroundColor: '#ffc0cb',
-    },  
+	  
 	headerTitle:"Kidnified",	
 	headerLeft: () =><Ionicons name="bars"size={30} style={{marginLeft:13,color:'blue',}} onPress={(props)=>{navigation.navigate('Fouth',{name:`${navigation.state.params.Email}`})}}/>,
 	headerRight: () =><FontAwesome5  name="comment-medical" size={30} style={{marginRight:7,color:'blue'}} onPress={(props)=>{navigation.navigate('Thirteen',{name:`${navigation.state.params.Email}`})}}/>,
@@ -88,8 +111,7 @@ export default class Dashboard extends React.Component{
       ],
     }
 	this.registerForPushNotificationsAsync()
-	
-  }
+    }
 		async componentDidMount (){
 	   try {
     const value = await AsyncStorage.getItem('come')	
@@ -126,7 +148,7 @@ export default class Dashboard extends React.Component{
 					cache: 'no-cache',
 					credentials:'include',
 					headers : {'Content-Type': 'application/json'},
-					body:JSON.stringify({Email:this.props.navigation.state.params.name,Token:this.state.expoPushToken}),
+					body:JSON.stringify({Email:this.props.navigation.state.params.Email,Token:this.state.expoPushToken}),
 				})
 				
 				//console.log(re)		
@@ -175,15 +197,21 @@ export default class Dashboard extends React.Component{
 				<Modal isVisible={this.state.sVisible} onBackButtonPress={() => this.setState({sVisible:false})}>
 					{ this.state.visible == "Schedule" ? 
 						<Schedule 
-						calNavP ={()=>{{this.props.navigation.navigate("Eleven",{name:`${this.props.navigation.state.params.name}`})}  this.setState({sVisible:false}) }} 
-						calNavH = {()=>{{this.props.navigation.navigate("Sixth",{name:`${this.props.navigation.state.params.name}`})} this.setState({sVisible:false})}}
-						calNavI = {()=>{{this.props.navigation.navigate("Tweleve",{name:`${this.props.navigation.state.params.name}`})} this.setState({sVisible:false})}}
+						calNavP ={()=>{{this.props.navigation.navigate("Eleven",{name:`${this.props.navigation.state.params.Email}`})}  this.setState({sVisible:false}) }} 
+						calNavH = {()=>{{this.props.navigation.navigate("Sixth",{name:`${this.props.navigation.state.params.Email}`})} this.setState({sVisible:false})}}
+						calNav = {()=>{{this.props.navigation.navigate("Tweleve",{name:`${this.props.navigation.state.params.Email}`})} this.setState({sVisible:false})}}
 					/> 
 					:
 					<Calculator
 						calNavU ={()=>{{this.props.navigation.navigate("Nine")}  this.setState({sVisible:false}) }} 
 						
 						calNavI = {()=>{{this.props.navigation.navigate("Eight")} this.setState({sVisible:false}) }}
+						Gfr = {()=>{{this.props.navigation.navigate("Seventeen")} this.setState({sVisible:false}) }}
+						BMI = {()=>{{this.props.navigation.navigate("Eighteen")} this.setState({sVisible:false}) }}
+						Lbm = {()=>{{this.props.navigation.navigate("Nineteen")} this.setState({sVisible:false}) }}
+						Rfc = {()=>{{this.props.navigation.navigate("T")} this.setState({sVisible:false}) }}
+						
+						
 					/> 
 					}
 						<View style={{backgroundColor:'white',marginTop:25,borderRadius:15}}>
@@ -257,8 +285,8 @@ const style = StyleSheet.create({
   },
   vaccineB:{
 	 
-	  paddingTop:30,
-	  paddingBottom:30,
+	  paddingTop:20,
+	  paddingBottom:20,
 	  borderBottomWidth:1,
 	  borderColor:'#D3D3D3',
 	 
