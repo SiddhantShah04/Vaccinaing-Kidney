@@ -38,7 +38,7 @@ export default class qA extends React.Component{
 	render(){
 		return(
 			<ScrollView>
-				<View style={{alignItems: 'center',backgroundColor:'#b6c2ee',}}>
+				<View style={{alignItems: 'center',}}>
 				
 						{this.state.Q.map((Qu) => 
 							<View style={{alignItems: 'center',marginTop:20,marginBottom:20,}}>

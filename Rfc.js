@@ -44,8 +44,6 @@ const styles={
 		height:50,
 		fontSize:20,
 		paddingLeft:10,
-		
-		
 	}
 	
 }

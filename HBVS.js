@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image,TouchableOpacity,KeyboardAvoidingView,ActivityIndicator,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
+import {Image,TouchableOpacity,KeyboardAvoidingView,ActivityIndicator,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet,Modal} from 'react-native';
 import Constants from 'expo-constants';
 
 import DatePicker from 'react-native-datepicker'
@@ -13,6 +13,39 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { StackActions, NavigationActions } from 'react-navigation';
 import  {addMonth} from './Date.js' 
 import  {fetchDose,addDose} from './api.js' 
+import  {M} from './scheduleHistroy.js'
+
+const doseType=["0 Dose","1st Dose","2nd Dose","3rd Dose"]
+const Histroy = (props) => {
+		let i=-1,j=-1
+	if(props.items == "Please Wait..."){
+		return(
+		<View>
+			<Text style={styles.atest}>Please wait...</Text>
+		</View>
+		)
+	}else{
+	return(
+		<View style={{alignItems:'center',backgroundColor:'whitesmoke',margin:20,padding:10,textAlign:'justify' }}>
+		{props.items.doses.map((items) =>{
+			const names = ["0 Dose","1st Dose","2nd Dose","3rd Dose"]
+		if(items != null ){
+			j=j+1
+			return(<Text style={{fontSize:16,textAlign:'justify' }}><Text style={{fontWeight:'bold'}}>{names[j]}</Text> : {items}</Text> )}
+		})
+		}
+		{props.items.antibody.map((items) =>{
+			const names = ["Antibody date","Antibody Value","Booster dose date"]
+		if(items != null ){
+			i=i+1
+			return(<Text style={{fontSize:16,textAlign:'justify' }}><Text style={{fontWeight:'bold'}}>{names[i]} </Text>: {items}</Text> )}else{i=-1}
+		})
+		}
+		</View>
+	)
+	}
+}
+ 
 const styles = StyleSheet.create({
 	container:{
 		flex:1,
@@ -44,7 +77,7 @@ const styles = StyleSheet.create({
 	}
 })
 
-const doseType=["0 Dose","1st Dose","2nd Dose","3rd Dose","Antibody Test"]
+
 
 let todayDate = `${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
 let tDay = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())
@@ -63,9 +96,12 @@ export default class HBVS extends React.Component{
 			dates:true,
 			Q:[todayDate],
 			notify:'',
-			abtValue:'',
-	
+			abtValue:null,
+			histroyData:["Please Wait..."],
+			visible:false,
 			animating: true,
+			doseDate1:null,
+			animatingM:true,
 			doseType:["0 Dose","1st Dose","2nd Dose","3rd Dose","Antibody Test"],
 			month:[" You need to take next dose after One month and notification will be sent for the same",
 			" You need to take next dose after One month and notification will be sent for the same",
@@ -157,7 +193,15 @@ setDate(date,props) {
 			)
 		}
 	}
+	history = async() => {
 	
+		this.setState({visible:true})
+		
+		const response = await fetch("http://192.168.1.4:5000/getScheduleHistroy?Email="+this.props.navigation.state.params.name)
+		const result = await response.json()
+		console.log(result)
+		this.setState({histroyData:result,animatingM:false})
+	}
 	insertDate = async() =>{	
 		
 		this.setState({animating:true})
@@ -170,12 +214,12 @@ setDate(date,props) {
 			Dat5.setDate(Dat5.getDate()+365)
 			let nextDate5 = `${Dat5.getDate()}/${parseInt(Dat5.getMonth())+1}/${Dat5.getFullYear()}`
 		
-				const res= await addDose(this.props.navigation.state.params.name,[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5])
+				const res= await addDose(this.props.navigation.state.params.name,[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5],this.state.abtValue,this.state.doseDate1)
 				this.setState({animating:false,buttonState:true,Q:[this.state.Q[0],this.state.Q[1],this.state.Q[2],this.state.Q[3],nextDate5]})
 		}else{
 	
-				const res= await addDose(this.props.navigation.state.params.name,this.state.Q)
-				this.setState({animating:false,buttonState:true})	
+				const res= await addDose(this.props.navigation.state.params.name,this.state.Q,this.state.abtValue,this.state.doseDate1)
+				this.setState({animating:false,buttonState:true,abtValue:''})	
 		}
 	}	
 	selectDates = (Qu,indexOfQ) => {
@@ -199,7 +243,7 @@ setDate(date,props) {
 	render(){
 		if(this.state.animating){
 				return(
-					<ActivityIndicator  animating = {this.state.animating} color = 'red' size = "large"style={styles.activityIndicator}/>
+					<ActivityIndicator  animating = {this.state.animating} color = 'red' size = "large" style={styles.activityIndicator}/>
 				)
 			}
 		else{
@@ -230,9 +274,17 @@ setDate(date,props) {
 					{this.antibodyValue()}
 					<View style={{margin:10}}>
 					<Button title="Submit" onPress={this.insertDate} disabled={this.state.buttonState} />	
+					<Text style={{color:'blue',textAlign:'center',marginTop:10}} onPress={this.history}>Previous dose</Text>
 				</View>	
-				</ScrollView>									
-				
+				<Modal visible={this.state.visible}  onRequestClose={() => this.setState({visible:false})}>
+					<Text style={{textAlign:'center',color:'green',marginTop:10}}>Previous doses dates and values</Text>
+					<ScrollView>
+					{
+						this.state.histroyData.map((items) => <Histroy  items={items}  /> ) 
+					}
+					</ScrollView>
+				</Modal >
+			</ScrollView>										
 			)
 		}
 	}

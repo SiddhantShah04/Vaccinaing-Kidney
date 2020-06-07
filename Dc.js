@@ -40,7 +40,7 @@ const Zones = (props) => {
 let screenWidth=Dimensions.get('window').width/2.3
 export default class AboutUs extends React.Component {
 	 static navigationOptions = {
-    headerTitle: 'Dialysis Centers',
+    headerTitle: 'Dialysis centers',
   }
   constructor(props){
 	  super(props);
@@ -96,7 +96,6 @@ export default class AboutUs extends React.Component {
 					<Text style={styles.searchText}> Search by City</Text>
 				</View>
 			</TouchableOpacity>
-			
 			<TouchableOpacity style={styles.searchButton} onPress={ () =>this.setState({mVisible:true,cZ:''})}>
 				<View style={{alignSelf:'center',marginTop:7,flexDirection:'row'}}>
 					<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="search" size={22} color='white' />
@@ -110,7 +109,7 @@ export default class AboutUs extends React.Component {
 					<View style={{marginTop:5,flex:1}}>
 						<View style={styles.input}>
 							<Ionicons style={{paddingTop:15}} name="search" size={20} color='#5e60ce'/>
-							<TextInput style={{fontSize:15,paddingLeft:5}} placeholder="Write a city name" value={this.state.textType} onChangeText = {this.handleTextChange}   underlineColorAndroid='transparent'/>
+							<TextInput style={{fontSize:15,paddingLeft:5,width:350}} placeholder="Write a city name" value={this.state.textType} onChangeText = {this.handleTextChange}   underlineColorAndroid='transparent'/>
 						</View>
 				<FlatList   data={this.state.toggelC}
 				  renderItem={({item}) =>  

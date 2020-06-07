@@ -85,8 +85,7 @@ this.setState({animating: false,Email:res})
 	
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={{color:'white',fontSize:35,fontWeight:'bold',}}>Kidnified</Text>
-        
+          <Text style={{color:'white',fontSize:35,fontWeight:'bold',textBreakStrategy:'simple',alignSelf: 'stretch',textAlign: 'center',}}>  Kidnify  </Text>
         </View>
         <View style={styles.login}>
           <View style={styles.inputContainer}>

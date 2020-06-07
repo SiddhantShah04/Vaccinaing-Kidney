@@ -26,7 +26,6 @@ const styles={
 	container:{
 		flex:1,
 		textAlign:'center',
-		
 		backgroundColor:'#e6e6fa'
 	},
 	text:{
@@ -56,18 +55,14 @@ export default class Lbm extends React.Component {
   };
   constructor(props) {
     super(props);
-	this.state ={
-		
+	this.state ={	
 		weight:'',
 		height:'',
 		result:'',
 		buttonState:true,
 		gender:'',
-	}
-    
+	} 
   }
-
-  
  handleChange = () =>{ 
 		let Weight=parseFloat(this.state.weight)
 		let Height=parseFloat(this.state.height)
@@ -76,16 +71,16 @@ export default class Lbm extends React.Component {
 		if(this.state.gender === "Male"){
 		w = 1.10 * Weight 
 		h = 128 *(( Weight*Weight)/((100 * Height)*(100 * Height)))
+		t=w-h
+		}else{
+			w = 1.07 * Weight 
+			h = 148 *(( Weight*Weight)/((100 * Height)*(100 * Height)))
+		t=w-h
 		}
-		t=sum-sum2
-	  	  
-		  this.setState({result:t})
-		  
+		
+		  this.setState({result:t})	  
   	}
-  
-  
   render(){
-	  
 	  return(
 		<View  style={styles.container}>
 			<View style={{marginLeft:10,marginRight:10}}> 
@@ -93,7 +88,6 @@ export default class Lbm extends React.Component {
 				<Text  style={styles.text}  >Weight in kg : </Text>
 				<TextInput style={styles.input}  value={this.state.weight} keyboardType="numeric" maxLength={4} onChangeText = {(weight)=>{this.setState({weight})}}/>  
 			</View>
-			
 			<View style={{marginTop:15}}>
 				<Text  style={styles.text} >Height in meter : </Text>
 				<TextInput style={styles.input}  value={this.state.height} keyboardType="numeric" maxLength={4} onChangeText = {(height)=>{this.setState({height})}}/>  
@@ -106,10 +100,9 @@ export default class Lbm extends React.Component {
 						<Picker.Item label="Female" value="Female" />					
 					</Picker> 
 			</View>
-			
 			<Button title="Calculate" onPress={() => this.handleChange()} disabled={this.state.buttonState} />
 				<Text style={{marginTop:20,fontSize:20,fontWeight:'bold'}}>Result:</Text>	
-				<Text style={{fontSize:18,textDecorationLine: 'underline'}}>Your BMI Value : <Text style={{fontWeight:'bold'}}>{this.state.result}</Text></Text>
+				<Text style={{fontSize:18,textDecorationLine: 'underline'}}>Your LBM Value : <Text style={{fontWeight:'bold'}}>{this.state.result}</Text></Text>
 			
 			</View>
 		</View>

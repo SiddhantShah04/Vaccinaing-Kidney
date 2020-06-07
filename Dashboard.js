@@ -38,7 +38,7 @@ const Calculator = (props) => {
 			
 			<TouchableOpacity onPress={props.Gfr} style={style.vaccineB}>
 				<View style={{textAlign:'center'}}>
-					<Text style={style.vaccineT}>Glomerular filtration rate Calculator</Text>
+					<Text style={style.vaccineT}>Glomerular Filtration Rate Calculator</Text>
 				</View>
 			</TouchableOpacity>
 			<TouchableOpacity onPress={props.BMI} style={style.vaccineB}>
@@ -63,7 +63,7 @@ const Calculator = (props) => {
 } 
 const Schedule = (props) => {
 	return(
-		<View style={{alignSelf:'center',backgroundColor:'white',width:screenWidth+200,height:275,borderRadius:15}} >	
+		<View style={{alignSelf:'center',backgroundColor:'white',width:screenWidth+205,height:200,borderRadius:10}} >	
 			<TouchableOpacity onPress={props.calNavH} style={style.vaccineB}>
 				<View style={{textAlign:'center'}}>
 					<Text style={style.vaccineT}> Hepatitis B Vaccine Schedule</Text>
@@ -88,7 +88,7 @@ export default class Dashboard extends React.Component{
   static navigationOptions = ({ navigation, screenProps }) => ({
 	 //  const {state} = navigation;
 	  
-	headerTitle:"Kidnified",	
+	headerTitle:"Kidnify",	
 	headerLeft: () =><Ionicons name="bars"size={30} style={{marginLeft:13,color:'blue',}} onPress={(props)=>{navigation.navigate('Fouth',{name:`${navigation.state.params.Email}`})}}/>,
 	headerRight: () =><FontAwesome5  name="comment-medical" size={30} style={{marginRight:7,color:'blue'}} onPress={(props)=>{navigation.navigate('Thirteen',{name:`${navigation.state.params.Email}`})}}/>,
   })
@@ -104,10 +104,10 @@ export default class Dashboard extends React.Component{
 	  sVisible:false,
 	  images: [
         //"https://source.unsplash.com/1024x768/?tree", // Network image
-        require('./assets/Dialysis_equipment_July-2019.jpg'),          // Local image
-		require('./assets/doctor_450x300.jpg'),
-		require('./assets/urology_med.jpg'),
-		require('./assets/Vaccines_iStock.jpg'),
+        require('./assets/dna-4092762_1280.jpg'),          // Local image
+		require('./assets/syringe_landscape.jpg'),
+		require('./assets/Viral_markers.jpg'),
+		require('./assets/vaccination-2725065_960_720.jpg'),
       ],
     }
 	this.registerForPushNotificationsAsync()
@@ -168,13 +168,10 @@ export default class Dashboard extends React.Component{
           <SliderBox  autoplay={true}  images={this.state.images} />
 		</View>
 		<View style={{paddingTop:20,marginBottom:10,flex:5,alignItems: 'center',}}>
-			
-			
-		
 				<TouchableWithoutFeedback  onPress={() => this.q("Fifth")}>
-					<View style={{flexDirection:'row',backgroundColor:"#9b59b6",width:screenWidth+190,height:140 }}>
+					<View style={{flexDirection:'row',backgroundColor:"#9b59b6",width:screenWidth+190,height:130 }}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="book-reader" size={35} color='white' />
-						<Text style={style.buttonText} > Educate Yourself</Text>
+						<Text style={style.buttonText} > Educate yourself</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				
@@ -182,15 +179,13 @@ export default class Dashboard extends React.Component{
 					<TouchableWithoutFeedback   onPress={() => this.setState({visible:'Calculator',sVisible:true})}>
 					<View style={{flexDirection:'row',backgroundColor:"#b6c617",width:screenWidth+5,height:140}}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="calculator" size={35} color='white' />
-						<Text style={style.buttonText} > Calculator</Text>
+						<Text style={style.buttonText}> Calculators</Text>
 					</View>
 				</TouchableWithoutFeedback>
-				
-				
 				<TouchableWithoutFeedback  onPress={() => this.setState({visible:'Schedule',sVisible:true})}>
 					<View style={{flexDirection:'row',backgroundColor:"#ff7675",width:screenWidth+5,height:140,marginLeft:8}}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="calendar-alt" size={35} color='white' />
-						<Text style={style.buttonText} >Schedule</Text>
+						<Text style={style.buttonText} >Vaccination{"\n"}   schedule</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				
@@ -199,7 +194,7 @@ export default class Dashboard extends React.Component{
 						<Schedule 
 						calNavP ={()=>{{this.props.navigation.navigate("Eleven",{name:`${this.props.navigation.state.params.Email}`})}  this.setState({sVisible:false}) }} 
 						calNavH = {()=>{{this.props.navigation.navigate("Sixth",{name:`${this.props.navigation.state.params.Email}`})} this.setState({sVisible:false})}}
-						calNav = {()=>{{this.props.navigation.navigate("Tweleve",{name:`${this.props.navigation.state.params.Email}`})} this.setState({sVisible:false})}}
+						calNavI = {()=>{{this.props.navigation.navigate("Tweleve",{name:`${this.props.navigation.state.params.Email}`})} this.setState({sVisible:false})}}
 					/> 
 					:
 					<Calculator
@@ -214,13 +209,7 @@ export default class Dashboard extends React.Component{
 						
 					/> 
 					}
-						<View style={{backgroundColor:'white',marginTop:25,borderRadius:15}}>
-						<TouchableOpacity onPress={() => this.setState({sVisible:false})} >
-							<View style={{textAlign:'center',marginTop:10,marginBottom:10}}>
-								<Text style={style.vaccineT}>  back</Text>
-							</View>
-						</TouchableOpacity>
-					</View>
+						
 				</Modal>
 				
 			
@@ -228,7 +217,7 @@ export default class Dashboard extends React.Component{
 				<View style={{marginTop:10}}>
 				
 				<TouchableWithoutFeedback   onPress={()=>{this.props.navigation.navigate("fourteen")}}>
-					<View style={{flexDirection:'row',backgroundColor:"#8293ee",width:screenWidth+190,height:140 }}>
+					<View style={{flexDirection:'row',backgroundColor:"#8293ee",width:screenWidth+190,height:130 }}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="flask" size={35} color='white' />
 						<Text style={style.buttonText} >Lab values interpretation</Text>
 					</View>
@@ -238,28 +227,37 @@ export default class Dashboard extends React.Component{
 			
 			<View style={{flexDirection:'row',marginTop:10}}>
 					<TouchableWithoutFeedback    onPress={() => this.q("Fifteen")}>
-					<View style={{flexDirection:'row',backgroundColor:"#734F96",width:screenWidth+5,height:140}}>
+					<View style={{flexDirection:'row',backgroundColor:"#ff005d",width:screenWidth+5,height:140}}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="search" size={30} color='white' />
-						<Text style={style.buttonText} >Dialysis {"\n"}Centers</Text>
+						<Text style={style.buttonText} >Dialysis {"\n"}centers</Text>
 						
 					</View>
 				</TouchableWithoutFeedback>
 				
 				
 				<TouchableWithoutFeedback  onPress={() => this.q("Sixteen")}>
-					<View style={{flexDirection:'row',backgroundColor:"#ff005d",width:screenWidth+5,height:140,marginLeft:8}}>
+					<View style={{flexDirection:'row',backgroundColor:"#4CAF50",width:screenWidth+5,height:140,marginLeft:8}}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="search" size={30} color='white' />
-						<Text style={style.buttonText}> Search Nephrologist </Text>
+						<Text style={{color:'white',alignSelf:'center',fontSize:17}}> Nephrologist</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				</View>
-			
+			<View style={{marginTop:10}}>
+				
+				<TouchableWithoutFeedback   onPress={()=>alert("Coming Soon")}>
+					<View style={{flexDirection:'row',backgroundColor:"#00BCD4",width:screenWidth+190,height:130 }}>
+						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="Quiz" size={35} color='white' />
+						<Text style={style.buttonText} >Quiz</Text>
+					</View>
+				</TouchableWithoutFeedback>
+				
+			</View>
 		</View>
       </ScrollView>                    
     )
   }
 }
-	
+//https://www.flaticon.com/
 const style = StyleSheet.create({
   Options:{
     height: 40,

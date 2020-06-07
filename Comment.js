@@ -39,12 +39,13 @@ const styles = StyleSheet.create({
   },
   askQuestion:{
 	minHeight:40,
-	
 	borderTopWidth:0.4,
+	height:120,
+	fontSize:17,
+	fontFamily: 'sans-serif',
+	marginTop:20,
 	
-	fontSize:15,
-	
-	  
+	textAlignVertical: 'top'
   },
   questionText:{
 	fontSize:17,
@@ -57,10 +58,9 @@ const styles = StyleSheet.create({
 
 const Com  = (props) => {
 	return(
-		<View style={{backgroundColor:"white",marginTop:7,flex:1,borderRadius:20,paddingTop:5,paddingBottom:5}}>
+		<View style={{backgroundColor:"white",marginTop:7,flex:1,borderWidth:0.4,paddingTop:5,paddingBottom:5}}>
 			<View style={{flexDirection:'row',marginLeft:5,marginRight:5}}>
 				<Text>{props.t.fullName}</Text>
-				<Text style={{position: "absolute",right:10}}>{props.t.Email}</Text>
 			</View>
 			<Text style={styles.questionText}>{props.t.text}</Text>
 			<View style={{marginTop:15}}>
@@ -123,11 +123,11 @@ export default class Comment extends React.Component{
 		  cMDetails:[],
 		  commentId:null,
 	  commentReplay:[],
+	  button:false,
 		
 	  }
 	this.getQuestion()
   }
-  
   getQuestion = async() => {
 	
 	 	const response = await fetch("https://vkidneym.herokuapp.com/Post")
@@ -135,7 +135,7 @@ export default class Comment extends React.Component{
 	   this.setState({text:result,animating:false,modalVisible:false})
   }
 	sendText = async() => {
-		this.setState({animating2:true})
+		this.setState({animating2:true,button:true})
 		
 		const result = await Post( this.state.Email,this.state.Qtext)
 		this.setState({animating2:false,text:result,modalVisible:false})
@@ -169,14 +169,12 @@ export default class Comment extends React.Component{
 				) 
 			}
 		else{
-			
 			return(
 			<>
 				<View  style={styles.container}>
 					<View style={{flexDirection:'row'}}>
 						<Text style={{flex:1,color:'grey',fontSize:15,borderRadius:35,backgroundColor:'white',borderWidth:0.4,borderColor:'grey',height:50,paddingLeft:10,paddingTop:12}}  onPress={() => { this.setState({modalVisible:true}) }}>Write something here...</Text>
 					</View>
-				
 					<ScrollView>
 						{this.state.text.map((text) => 
 								<Com changeCommentModal={() => {this.viewCommentModel(text.postId,text.text,text.userId,text.fullName)}} t={text}/>
@@ -185,15 +183,14 @@ export default class Comment extends React.Component{
 					</ScrollView>
 				</View>
 				
-				<Modal   visible={this.state.modalVisible}  animationType="slide">
+				<Modal   visible={this.state.modalVisible}  animationType="slide" onRequestClose={() => this.setState({modalVisible:false})}>
 					<View style={{marginTop:10,marginLeft:10,marginRight:10}}>
-					<Icon name="times-circle" size={30} onPress={() => this.setState({modalVisible:false})} />
-						<View style={{height:120,marginBottom:40,marginTop:20,borderBottomWidth:0.4,}}>
-							<TextInput style={styles.askQuestion} multiline  placeholder="What's on your mind" onChangeText ={(Qtext) => this.setState({Qtext})} />
+						<View style={{borderBottomWidth:0.4,}}>
+							<TextInput style={styles.askQuestion}  multiline  placeholder="What's on your mind" onChangeText ={(Qtext) => this.setState({Qtext})} />
 						</View>		
 						
 						<View style={{marginTop:20,marginLeft:5,marginRight:5}}>
-							<Button  onPress={this.sendText}  title="Post" /> 
+							<Button  onPress={this.sendText}  title="Post"  disabled={this.state.button} /> 
 							<Text style={{marginTop:20}}>Note: This Chat zone is not meant to replace the recommendations of your doctor or dialysis care team. The instructions given are general instructions. Kindly remain informed that the app building team is not responsible for any misinterpretation of values.</Text>
 						</View>
 					</View>
@@ -202,8 +199,7 @@ export default class Comment extends React.Component{
 					 
 					
 			</Modal>
-			<Modal  visible={this.state.commentModalVisible}  animationType="slide">
-				<Icon name="times-circle" size={30} onPress={() => this.setState({commentModalVisible:false})} style={{marginLeft:10,marginTop:10,marginBottom:10}}/> 
+			<Modal  visible={this.state.commentModalVisible}  animationType="slide" onRequestClose={() => this.setState({commentModalVisible:false})}>
 				<View style={{backgroundColor:'whitesmoke',marginLeft:10,marginRight:10,flexDirection:'row',paddingTop:20,paddingBottom:20}}>
 						<Text style={{fontFamily:'sans-serif',fontWeight:'bold',fontSize:15}}>{this.state.cMDetails[3]}</Text>
 					<Text style={{fontSize:15,marginLeft:1}}>	{this.state.cMDetails[0]}</Text>
@@ -220,7 +216,7 @@ export default class Comment extends React.Component{
 					}				
 				</ScrollView>
 				<View style={{minHeight:60,width:Dimensions.get('window').width,position: "absolute",bottom:4,flexDirection:'row'}}>
-					<TextInput style={styles.input}  autoFocus={true} multiline value={this.state.comment} onChangeText={(comment) => this.setState({comment})}  placeholder="Add a comment ..."  />
+					<TextInput style={styles.input}  multiline value={this.state.comment} onChangeText={(comment) => this.setState({comment})}  placeholder="Add a comment ..."  />
 					<View style={{position: "absolute",right:10,bottom:4,alignSelf: 'flex-end', }}>
 						<Icon name="paper-plane" size={43} color="green"  onPress={ () => this.sendComment(this.state.cMDetails[1],this.state.Email,this.state.cMDetails[1])}/>									
 					</View>
