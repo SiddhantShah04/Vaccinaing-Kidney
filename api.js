@@ -1,6 +1,6 @@
 export const fetchDose = async(Email) => {
 	try{
-		const response = await fetch("http://192.168.1.4:5000/schedulerDateInsert?Email="+Email)
+		const response = await fetch("https://vkidneym.herokuapp.com/schedulerDateInsert?Email="+Email)
 		const result = await response.json()
 		return result
 	}
@@ -10,7 +10,7 @@ export const fetchDose = async(Email) => {
 export const addDose = async(Email,doseData,abtValue,boosterDoseDate) => {
 	console.log(boosterDoseDate)
 	try{
-		const response = await fetch("http://192.168.1.4:5000/schedulerDateInsert?Email="+Email,{
+		const response = await fetch("https://vkidneym.herokuapp.com/schedulerDateInsert?Email="+Email,{
 					method : 'POST',
 					cache: 'no-cache',
 					credentials:'include',
@@ -24,7 +24,7 @@ export const addDose = async(Email,doseData,abtValue,boosterDoseDate) => {
 					abtValue:abtValue,
 					boosterDoseDate:boosterDoseDate,
 					}),
-				})
+				}) 
 				const result = await response.text()
 				if(result == "ok"){
 					
@@ -36,7 +36,7 @@ export const addDose = async(Email,doseData,abtValue,boosterDoseDate) => {
 }
 export const addDosevs = async(Email,doseData,type) => {
 	try{
-		const response = await fetch("https://vkidneym.herokuapp.com/Pcv",{
+		const response = await fetch("https://vkidneym.herokuapp.com/Pcv?type="+type,{
 					method : 'POST',
 					cache: 'no-cache',
 					credentials:'include',
@@ -52,13 +52,7 @@ export const addDosevs = async(Email,doseData,type) => {
 }
 export const getDosevs  =  async(Email,type) => {
 	try{
-		const response = await fetch("https://vkidneym.herokuapp.com/hasPvs",{
-			method : 'POST',
-			cache: 'no-cache',
-			credentials:'include',
-			headers : {'Content-Type': 'application/json'},
-			body:JSON.stringify({Email:Email,type:type}),
-		})
+		const response = await fetch("https://vkidneym.herokuapp.com/Pcv?Email="+Email+"&"+"type="+type)
 		const result = await response.json()
 		return result
 		

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image,TouchableOpacity,KeyboardAvoidingView,ActivityIndicator,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet } from 'react-native';
+import {Image,TouchableOpacity,KeyboardAvoidingView,ActivityIndicator,TouchableHighlight,TextInput,FlatView, ScrollView, Button,Text, View, StyleSheet,Modal} from 'react-native';
 import Constants from 'expo-constants';
 import DatePicker from 'react-native-datepicker'
 import { Notifications } from 'expo';
@@ -11,6 +11,22 @@ import Ionicons from 'react-native-vector-icons/FontAwesome';
 import { StackActions, NavigationActions } from 'react-navigation';
 import  {addMonth} from './Date.js' 
 
+const Histroy = (props) => {
+
+	if(props.items == "Please Wait..."){
+		return(
+		<View>
+			<Text style={styles.atest}>Please wait...</Text>
+		</View>
+		)
+	}else{
+		return(
+		<View>
+				<Text style={{backgroundColor:'whitesmoke',fontSize:16,textAlign:'justify',marginLeft:10,marginRight:10}}><Text style={{fontWeight:'bold'}}>Influenza Vaccine </Text>: {props.items}</Text> 
+		</View>
+		)
+	}
+}
 const styles = StyleSheet.create({
 	container:{
 		flex:1,
@@ -61,7 +77,9 @@ export default class IVS extends React.Component{
 			month:['Influenza Vaccine after one year'],
 			animating:true,
 			buttonState:true,
-			type:['Influenza Vaccine :']
+			type:['Influenza Vaccine :'],
+			visible:false,
+			histroyData:["Please Wait..."],
 		}
 		this.dateInserted()
 	}
@@ -88,7 +106,12 @@ export default class IVS extends React.Component{
 					alert("Some thing went wrong")
 				}		
 		}
-	
+	history = async() => {
+		this.setState({visible:true})
+		const response = await fetch("https://vkidneym.herokuapp.com/getScheduleHistroyivs?Email=" +this.props.navigation.state.params.name)
+		const result = await response.json()
+		this.setState({histroyData:result,animatingM:false})
+	}
 	setDate (date,type){
 		let nextDate1 = addMonth(12,date)
 		this.setState({Q:[nextDate1],buttonState:false})
@@ -128,8 +151,18 @@ export default class IVS extends React.Component{
 			</View>	
 		)}
 		
+		<Modal visible={this.state.visible}  onRequestClose={() => this.setState({visible:false})}>
+					<Text style={{textAlign:'center',color:'green',marginTop:10,marginBottom:10}}>Previous doses dates and values</Text>
+					<ScrollView>
+					{
+						this.state.histroyData.map((items) => <Histroy  items={items}  /> ) 
+					}
+					</ScrollView>
+				</Modal >
+		
 		<View style={{margin:20}}>
 					<Button title="Submit" onPress={()=> {this.insertDose()}} disabled={this.state.buttonState}  />
+					<Text style={{color:'blue',textAlign:'center',marginTop:10}} onPress={this.history}>Previous dose</Text>
 		</View>
 		</View>		
 	)}

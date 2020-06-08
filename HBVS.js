@@ -26,7 +26,7 @@ const Histroy = (props) => {
 		)
 	}else{
 	return(
-		<View style={{alignItems:'center',backgroundColor:'whitesmoke',margin:20,padding:10,textAlign:'justify' }}>
+		<View style={{marginLeft:10,backgroundColor:'whitesmoke',marginRight:10,padding:10,textAlign:'justify' }}>
 		{props.items.doses.map((items) =>{
 			const names = ["0 Dose","1st Dose","2nd Dose","3rd Dose"]
 		if(items != null ){
@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 		paddingTop:1,
 		paddingBottom:15,
 		borderBottomWidth:1,
-		
 	},
 	dates:{
 		fontSize:15,
@@ -76,13 +75,9 @@ const styles = StyleSheet.create({
 		color:'red',
 	}
 })
-
-
-
 let todayDate = `${new Date().getDate()}/${new Date().getMonth()+1}/${new Date().getFullYear()}`
 let tDay = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())
 export default class HBVS extends React.Component{
-	
 	static navigationOptions = ({ navigation, screenProps }) => ({
 	
 	headerTitle:"Hepatitis B Vaccine Schedule",	
@@ -194,22 +189,18 @@ setDate(date,props) {
 		}
 	}
 	history = async() => {
-	
-		this.setState({visible:true})
-		
-		const response = await fetch("http://192.168.1.4:5000/getScheduleHistroy?Email="+this.props.navigation.state.params.name)
+		this.setState({visible:true})	
+		const response = await fetch("https://vkidneym.herokuapp.com/getScheduleHistroy?Email="+this.props.navigation.state.params.name)
 		const result = await response.json()
 		console.log(result)
 		this.setState({histroyData:result,animatingM:false})
 	}
 	insertDate = async() =>{	
-		
 		this.setState({animating:true})
 		if(this.state.abtValue == "0"){ 
 			this.setState({Q:[todayDate],abtValue:'',})
 		}
 		if(this.state.abtValue > 9){
-					
 			let Dat5 = new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate());
 			Dat5.setDate(Dat5.getDate()+365)
 			let nextDate5 = `${Dat5.getDate()}/${parseInt(Dat5.getMonth())+1}/${Dat5.getFullYear()}`
@@ -223,9 +214,6 @@ setDate(date,props) {
 		}
 	}	
 	selectDates = (Qu,indexOfQ) => {
-		
-		//if Q[5] == Dose0 then show the datePicker
-		
 		return (	
 			<View style={{flexDirection:'row',}}>
 			<Text style={{fontSize:18}}>{this.state.doseType[indexOfQ]} : </Text>
