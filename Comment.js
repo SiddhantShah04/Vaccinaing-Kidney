@@ -103,7 +103,7 @@ const Showcomment = (props) => {
 }
 export default class Comment extends React.Component{
 	static navigationOptions = ({ navigation, screenProps }) => ({
-	headerTitle:"Comment Zone",	
+	headerTitle:"Chat Zone",	
   })
   constructor(props){
 	  super(props)
@@ -191,7 +191,9 @@ export default class Comment extends React.Component{
 						
 						<View style={{marginTop:20,marginLeft:5,marginRight:5}}>
 							<Button  onPress={this.sendText}  title="Post"  disabled={this.state.button} /> 
-							<Text style={{marginTop:20}}>Note: This Chat zone is not meant to replace the recommendations of your doctor or dialysis care team. The instructions given are general instructions. Kindly remain informed that the app building team is not responsible for any misinterpretation of values.</Text>
+							<Text style={{marginTop:20,textAlign:'justify',}}>Note: Kindly note that the instructions given herewith are general. 
+							Our sincere try will be to provide solutions to your queries on either nature of kidney disease, treatment options, complications, 
+							precautionary measures, etc. The app building team will not be responsible for any misinterpretation of information shared herewith.</Text>
 						</View>
 					</View>
 					

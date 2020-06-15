@@ -107,7 +107,6 @@ export const name = (name) => {
 			a.push(names[i])
 		}
 	}	
-	
 	return(a);
 }
 export const gfr = (age,sc,gender,raceAF) => {

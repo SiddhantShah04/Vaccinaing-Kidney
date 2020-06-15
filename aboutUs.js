@@ -30,33 +30,23 @@ const styles = StyleSheet.create({
 export default class AboutUs extends React.Component {
 	
 	static navigationOptions = {
-		
-	headerStyle: {
-		backgroundColor: '#ffc0cb',
-    },
-    headerTitle: 'About Us',
+    headerTitle: 'About  Kidnify',
     headerTintColor:'blue',
-  }
+}
 	
 	render(){
 		return(
 			<ScrollView style={styles.container}>
-				<View style={{marginTop:10,marginLeft:20,marginRight:20,fontSize:25}}>
+				<View style={{marginTop:25,marginLeft:20,marginRight:20,fontSize:25}}>
 				
-					<Text style={styles.text}>This app has been designed specifically for patients undergoing hemodialysis. The major reasons for complications in hemodialysis patients are infections and fluid burden, both of which are  preventable.</Text>
+					<Text style={styles.text}>This app has been built with a vision to educate kidney patients especially ones on dialysis - hemodialysis or peritoneal dialysis. 
+					It can act as a guiding tool to schedule their vaccines, to interpret their lab values, to calculate their ideal interdialytic weight gain, etc. 
+					 The app features a chat zone for patients to avail responses to their queries related to kidney disease and dialysis by nephrologists. 
+					 This app will also act as a database of dialysis facilities across India</Text>
 					
-					<Text style={styles.text}>The main features of this app are:</Text>
-				
-					
-					<Text style={{fontSize:20,fontWeight:'bold'}} >• Planning and scheduling vaccines-</Text>
-					<Text style={styles.text}>with the help of notification based system, you can set alarms for notifying regarding the due date of vaccinations </Text>
-					
-				
-					<Text  style={{fontSize:20,fontWeight:'bold'}}>• Ultrafiltration record maintenance-</Text>
-					<Text style={styles.text}>it helps in maintaining records of fluid status i.e. weight gain in between 2 dialysis sessions - with these results patients can get online recommendations about minimizing fluid gain and thereby lowering chances of complications. </Text>
-					
-				
-					<Text style={styles.text}> To the best of our knowledge, an app of this kind has not been developed for dialysis patients in India. The vaccination section of this app can be utilized by patients who are in pre-dialysis stages too (Chronic Kidney Disease Stage 3-4). This app can play the role of an educator as well as planner and is certainly not aimed at replacing or substituting the advise of your Nephrologist or dialysis care provider.  </Text>
+					<Text style={styles.text}> To the best of our knowledge, an app of this kind has not been developed for dialysis patients in India.
+						This app can play the role of an educator as well as planner and is certainly not aimed at replacing or substituting the advise of your Nephrologist or Dialysis care provider.  
+					</Text>
 				</View>
 			</ScrollView>
 		)

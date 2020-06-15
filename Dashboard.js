@@ -185,7 +185,7 @@ export default class Dashboard extends React.Component{
 				<TouchableWithoutFeedback  onPress={() => this.setState({visible:'Schedule',sVisible:true})}>
 					<View style={{flexDirection:'row',backgroundColor:"#ff7675",width:screenWidth+5,height:140,marginLeft:8}}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="calendar-alt" size={35} color='white' />
-						<Text style={style.buttonText} >Vaccination{"\n"}   schedule</Text>
+						<Text style={style.buttonText} >Vaccination{"\n"} schedule</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				
@@ -238,7 +238,7 @@ export default class Dashboard extends React.Component{
 				<TouchableWithoutFeedback  onPress={() => this.q("Sixteen")}>
 					<View style={{flexDirection:'row',backgroundColor:"#4CAF50",width:screenWidth+5,height:140,marginLeft:8}}>
 						<Ionicons style={{marginLeft:10,alignSelf:'center'}} name="search" size={30} color='white' />
-						<Text style={{color:'white',alignSelf:'center',fontSize:17}}> Nephrologist</Text>
+						<Text style={{color:'white',alignSelf:'center',fontSize:17}}> Nephrologists</Text>
 					</View>
 				</TouchableWithoutFeedback>
 				</View>

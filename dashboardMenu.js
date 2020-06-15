@@ -32,10 +32,7 @@ const logoutAction = StackActions.reset({
 export default class Menu extends React.Component{
   static navigationOptions = {
 	
-	headerStyle: {
-        backgroundColor: '#ffc0cb',
-    },
-	  
+
     headerTitle: 'Menu',
     headerTintColor:'blue',
   }
@@ -57,7 +54,7 @@ export default class Menu extends React.Component{
 		  
 		
 		<TouchableOpacity style={style.Options}>
-            <Text style={{ fontSize: 20, }} onPress={()=>this.props.navigation.navigate("Ten")}>About Kidnified</Text>
+            <Text style={{ fontSize: 20, }} onPress={()=>this.props.navigation.navigate("Ten")}>About Kidnify</Text>
         </TouchableOpacity>
 		
 		<TouchableOpacity style={style.Options}>

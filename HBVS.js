@@ -15,7 +15,7 @@ import  {addMonth} from './Date.js'
 import  {fetchDose,addDose} from './api.js' 
 import  {M} from './scheduleHistroy.js'
 
-const doseType=["0 Dose","1st Dose","2nd Dose","3rd Dose"]
+const doseType=["0 Dose","1st Dose","2nd Dose","3rd Dose","Antibody Test"]
 const Histroy = (props) => {
 		let i=-1,j=-1
 	if(props.items == "Please Wait..."){
@@ -34,10 +34,13 @@ const Histroy = (props) => {
 			return(<Text style={{fontSize:16,textAlign:'justify' }}><Text style={{fontWeight:'bold'}}>{names[j]}</Text> : {items}</Text> )}
 		})
 		}
+		
 		{props.items.antibody.map((items) =>{
 			const names = ["Antibody date","Antibody Value","Booster dose date"]
-		if(items != null ){
+		if(items != null && i <2 ){
+
 			i=i+1
+			
 			return(<Text style={{fontSize:16,textAlign:'justify' }}><Text style={{fontWeight:'bold'}}>{names[i]} </Text>: {items}</Text> )}else{i=-1}
 		})
 		}
@@ -45,7 +48,6 @@ const Histroy = (props) => {
 	)
 	}
 }
- 
 const styles = StyleSheet.create({
 	container:{
 		flex:1,

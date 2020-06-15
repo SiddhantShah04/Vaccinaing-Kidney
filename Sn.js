@@ -52,7 +52,7 @@ const Names = (props) => {
 }
 export default class AboutUs extends React.Component {
 	 static navigationOptions = {
-    headerTitle: 'Search Nephrologist',
+    headerTitle: 'Search Nephrologists',
   }
 	constructor(props){
 		super(props)
